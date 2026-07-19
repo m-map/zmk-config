@@ -1,0 +1,71 @@
+# xiao_split_60 keyboard layout — source of truth for the keymap.
+#
+# Edit this file, then run generate-keymap.ps1 in this same folder to
+# regenerate xiao_split_60.keymap. Do not hand-edit the .keymap file --
+# it gets overwritten.
+#
+# Each layer is a 5-row x 12-col grid: columns 0-5 are the left half,
+# columns 6-11 are the right half, in the same left-to-right visual order
+# you'd read the physical keyboard. The "|" is just a divider for
+# readability -- the generator ignores it, so exact spacing doesn't matter.
+#
+# Layer order in this file IS the layer index (0-based) used by MO/TOG/TO
+# tokens below. Currently: 0=base, 1=f_hold, 2=sys, 3=game, 4=fn.
+#
+# Token reference:
+#   A-Z, 0-9                    a letter or digit key
+#   ESC TAB BSPC DEL ENTER SPACE      named keys
+#   LSFT RSFT LCTL LALT LGUI          modifiers
+#   GRAVE MINUS EQUAL LBKT RBKT BSLH SEMI SQT COMMA DOT FSLH   punctuation
+#   END UP DOWN LEFT RIGHT            navigation
+#   F1 .. F12                         function keys
+#   MUTE                              mute/unmute
+#   APP                               menu / right-click key
+#   TRNS                              transparent -- falls through to the
+#                                      next active layer below this one
+#   NONE                              key does nothing
+#   FHOLD                             hold: F key -> f_hold layer (punctuation)
+#                                      tap: F key -> letter f
+#   MO<n>                             hold: momentary-activate layer n
+#   TOG<n>                            press: toggle layer n on/off
+#   TO<n>                             press: switch to layer n only,
+#                                      deactivating every other layer
+#   BOOT                              reboot into bootloader (for reflashing)
+#   BT0 BT1 BT2 BT3 BT4               select Bluetooth profile 0-4
+#   OUTTOG                            toggle USB/BLE output
+#   BTCLR                             clear current Bluetooth profile's bond
+
+[base]
+ESC   1     2     3     4     5     | 6      7     8     9     0     BSPC
+TAB   Q     W     E     R     T     | Y      U     I     O     P     DEL
+LSFT  A     S     D     FHOLD G     | H      J     K     L     SEMI  SQT
+LALT  Z     X     C     V     B     | N      M     COMMA DOT   FSLH  RSFT
+LCTL  LGUI  TO3   TOG2  END   GRAVE | MUTE   APP   ENTER SPACE SPACE MO4
+
+[f_hold]
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS  TRNS  TRNS  MINUS EQUAL TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS  TRNS  TRNS  LBKT  RBKT  BSLH
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS  TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS  TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS  TRNS  TRNS  TRNS  TRNS  TRNS
+
+[sys]
+BOOT  BT0   BT1   BT2   BT3   BT4  | OUTTOG TRNS  TRNS  TRNS  BTCLR BOOT
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS   TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS   TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS   TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS   TRNS  TRNS  TRNS  TRNS  TRNS
+
+[game]
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS  TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS  TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS  UP    TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | LEFT  DOWN  RIGHT TRNS  TRNS  TRNS
+TRNS  SPACE TO0   TOG2  TRNS  TRNS | TRNS  TRNS  TOG2  TO0   SPACE MO4
+
+[fn]
+TRNS  F1    F2    F3    F4    F5   | F6    F7    F8    F9    F10   TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS  TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS  TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS  TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  TRNS | TRNS  TRNS  TRNS  TRNS  TRNS  TRNS
