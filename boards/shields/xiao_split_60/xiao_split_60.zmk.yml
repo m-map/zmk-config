@@ -1,0 +1,18 @@
+# This file was generated from a template. Edit it to match your keyboard.
+# See https://zmk.dev/docs/development/hardware-integration/hardware-metadata-files
+# for instructions.
+
+file_format: "1"
+id: xiao_split_60
+name: xiao split 60
+type: shield
+
+features:
+  - keys
+
+requires:
+  - seeed_xiao
+
+siblings:
+  - xiao_split_60_left
+  - xiao_split_60_right
