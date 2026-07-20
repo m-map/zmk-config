@@ -1,6 +1,6 @@
 if SHIELD_XIAO_BUTTERFLY_30
 
 config ZMK_KEYBOARD_NAME
-    default "xiao butterfly 30"
+    default "butterfly30"
 
 endif # SHIELD_XIAO_BUTTERFLY_30
