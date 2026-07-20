@@ -1,0 +1,53 @@
+// Unibody (non-split) 30-key board, single Seeeduino XIAO BLE.
+//
+// Electrical matrix is 5 rows (xiao_d 0-4) x 6 columns (xiao_d 5,10,6,9,7,8),
+// diode col2row. Each physical row of 10 keys is wired as a left half on one
+// column pin and a right half (mirrored) on the paired column pin -- see the
+// matrix-transform map below, which reads out in normal left-to-right,
+// top-to-bottom physical order regardless of the underlying wiring.
+
+#include <dt-bindings/zmk/matrix_transform.h>
+
+#include "xiao_butterfly_30-layouts.dtsi"
+
+/ {
+    chosen {
+        zmk,physical-layout = &default_layout;
+        zmk,kscan = &kscan;
+    };
+
+    kscan: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        diode-direction = "col2row";
+        wakeup-source;
+
+        row-gpios
+            = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            ;
+
+        col-gpios
+            = <&xiao_d 5 GPIO_ACTIVE_HIGH>
+            , <&xiao_d 10 GPIO_ACTIVE_HIGH>
+            , <&xiao_d 6 GPIO_ACTIVE_HIGH>
+            , <&xiao_d 9 GPIO_ACTIVE_HIGH>
+            , <&xiao_d 7 GPIO_ACTIVE_HIGH>
+            , <&xiao_d 8 GPIO_ACTIVE_HIGH>
+            ;
+    };
+
+    default_transform: default_transform {
+        compatible = "zmk,matrix-transform";
+        columns = <6>;
+        rows = <5>;
+
+        map = <
+            RC(0,0) RC(1,0) RC(2,0) RC(3,0) RC(4,0)    RC(4,1) RC(3,1) RC(2,1) RC(1,1) RC(0,1)
+            RC(0,2) RC(1,2) RC(2,2) RC(3,2) RC(4,2)    RC(4,3) RC(3,3) RC(2,3) RC(1,3) RC(0,3)
+            RC(0,4) RC(1,4) RC(2,4) RC(3,4) RC(4,4)    RC(4,5) RC(3,5) RC(2,5) RC(1,5) RC(0,5)
+        >;
+    };
+};

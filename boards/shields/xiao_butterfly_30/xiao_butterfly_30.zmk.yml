@@ -1,0 +1,10 @@
+file_format: "1"
+id: xiao_butterfly_30
+name: xiao butterfly 30
+type: shield
+
+features:
+  - keys
+
+requires:
+  - seeed_xiao

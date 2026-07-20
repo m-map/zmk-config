@@ -1,0 +1,54 @@
+# xiao_butterfly_30 keyboard layout — source of truth for the keymap.
+#
+# Edit this file, then run generate-keymap.ps1 in this same folder to
+# regenerate xiao_butterfly_30.keymap. Do not hand-edit the .keymap file -- it
+# gets overwritten.
+#
+# Each layer is a 3-row x 10-col grid, in the same left-to-right,
+# top-to-bottom physical order you'd read the keyboard. The "|" is just a
+# divider for readability -- the generator ignores it, so exact spacing
+# doesn't matter.
+#
+# Layer order in this file IS the layer index (0-based) used by MO/TOG/TO
+# tokens below. Currently: 0=base, 1=T, 2=H, 3=layer2.
+#
+# Token reference:
+#   A-Z, 0-9                    a letter or digit key
+#   ESC TAB BSPC DEL ENTER SPACE      named keys
+#   LSFT RSFT LCTL RCTL LALT LGUI     modifiers
+#   GRAVE MINUS EQUAL LBKT RBKT BSLH SEMI SQT COMMA DOT FSLH COLON   punctuation
+#   TRNS                              transparent -- falls through to the
+#                                      next active layer below this one
+#   NONE                              key does nothing
+#   THOLD                             hold: T key -> T layer (symbols)
+#                                      tap: T key -> letter t
+#   HHOLD                             hold: H key -> H layer (numbers)
+#                                      tap: H key -> letter h
+#   MO<n>                             hold: momentary-activate layer n
+#   TOG<n>                            press: toggle layer n on/off
+#   TO<n>                             press: switch to layer n only,
+#                                      deactivating every other layer
+#   BOOT                              reboot into bootloader (for reflashing)
+#   BT0 BT1 BT2 BT3 BT4               select Bluetooth profile 0-4
+#   OUTTOG                            toggle USB/BLE output
+#   BTCLR                             clear current Bluetooth profile's bond
+
+[base]
+Q     W     F     P     G     | J     L     U     Y     TOG3
+A     R     S     THOLD D     | HHOLD N     E     I     O
+Z     X     C     V     B     | SPACE K     M     COMMA DOT
+
+[T]
+GRAVE TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  MINUS EQUAL BSPC
+TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  LBKT  RBKT  BSLH  ENTER
+LSFT  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  COLON SQT   FSLH
+
+[H]
+1     2     3     4     5     | 6     7     8     9     0
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+
+[layer2]
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TOG3
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  RCTL  RSFT
