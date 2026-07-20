@@ -8,7 +8,7 @@ A [ZMK](https://zmk.dev) firmware user-config repo for two custom keyboards, bot
 controllers (`seeeduino_xiao_ble` board):
 
 - `xiao_split_60`: a 5x12 (5 row, 6+6 column) split 60% board, one XIAO BLE per half.
-- `xiao_butterfly_30`: a unibody 30-key board (3 rows x 10 columns), a single XIAO BLE, BLE-only (no
+- `nrf_butterfly_30`: a unibody 30-key board (3 rows x 10 columns), a single XIAO BLE, BLE-only (no
   split link).
 
 ## Repo layout
@@ -33,27 +33,23 @@ controllers (`seeeduino_xiao_ble` board):
   - `xiao_split_60.conf`, `xiao_split_60_left.conf`, `xiao_split_60_right.conf` — build-level Kconfig
     overlays (BLE latency tuning, sleep/idle timeouts, disabling USB/logging on the peripheral half,
     battery reporting). These layer on top of the shield's own `xiao_split_60.conf`.
-  - `xiao_butterfly_30.conf` — build-level Kconfig overlay for the 30-key board (sleep/idle timeouts,
+  - `nrf_butterfly_30.conf` — build-level Kconfig overlay for the 30-key board (sleep/idle timeouts,
     disabling serial logging, battery reporting). No split-link settings, since it's unibody.
-- `boards/shields/xiao_butterfly_30/` — the 30-key shield, structured the same way as `xiao_split_60` but
+- `boards/shields/nrf_butterfly_30/` — the 30-key shield, structured the same way as `xiao_split_60` but
   unibody (single `.overlay` instead of a shared `.dtsi` + per-half overlays, since there's only one PCB):
-  - `xiao_butterfly_30.overlay` — kscan matrix (`col2row`; 5 row-gpios on `xiao_d 0-4`, 6 col-gpios on
+  - `nrf_butterfly_30.overlay` — kscan matrix (`col2row`; 5 row-gpios on `xiao_d 0-4`, 6 col-gpios on
     `xiao_d 5,10,6,9,7,8`) and the `default_transform` matrix-transform. The 6 column pins pair up
     (0&1, 2&3, 4&5) into the 3 physical rows, each pin driving one (mirrored) half of that row's 10 keys —
     see the comment at the top of the file for how that maps to the `map` property's RC() ordering.
-  - `xiao_butterfly_30-layouts.dtsi`, `Kconfig.shield`, `Kconfig.defconfig`, `xiao_butterfly_30.conf`,
-    `xiao_butterfly_30.zmk.yml` — same roles as their `xiao_split_60` counterparts.
-  - `layout.txt` / `generate-keymap.ps1` / `xiao_butterfly_30.keymap` — same generated-keymap workflow as
+  - `nrf_butterfly_30-layouts.dtsi`, `Kconfig.shield`, `Kconfig.defconfig`, `nrf_butterfly_30.conf`,
+    `nrf_butterfly_30.zmk.yml` — same roles as their `xiao_split_60` counterparts.
+  - `layout.txt` / `generate-keymap.ps1` / `nrf_butterfly_30.keymap` — same generated-keymap workflow as
     `xiao_split_60` (see "Editing the keymap" below), but for a 3-row x 10-col grid instead of 5x12.
-    Layers: `base` (Colemak-DH letters), `sym` (symbols, held via the `T` key), `num` (numbers, held via
-    the `H` key), `layer2` (mods, toggled via a dedicated key). `THOLD`/`HHOLD` are this shield's hold-tap
-    tokens, analogous to `xiao_split_60`'s `FHOLD`. Note layer *node names* must not be bare A-Z letters
-    (e.g. `T`, `H`) — `dt-bindings/zmk/keys.h` `#define`s every letter as its HID keycode, and devicetree
-    files go through the C preprocessor first, so a node literally named `T {` gets macro-substituted into
-    a number before the devicetree compiler ever sees it. `THOLD`/`HHOLD`'s own tap arguments to `&kp` are
-    unaffected since a numeric substitution there is exactly the intent.
-- `build.yaml` — GitHub Actions build matrix: builds `seeeduino_xiao_ble` + `xiao_split_60_left`,
-  `+ xiao_split_60_right`, and `+ xiao_butterfly_30`.
+    Two layers: `base` (letters) and `layer2` (right-pinky ctrl/shift), switched between with a `TO`
+    pair on the same physical key (top-right) — `TO1` on `base`, `TO0` on `layer2`. No hold-tap behaviors
+    are defined for this shield.
+- `build.yaml` — GitHub Actions build matrix: builds `seeeduino_xiao_ble` + `xiao_split_60_left`
+  `+ xiao_split_60_right`, and `+ nrf_butterfly_30`.
 - `.github/workflows/build.yml` — CI entry point; delegates to ZMK's reusable
   `build-user-config.yml@v0.3` workflow. This is the actual way firmware gets built — there is no local
   build tooling checked into the repo.
@@ -67,7 +63,7 @@ controllers (`seeeduino_xiao_ble` board):
 Each shield's keymap is authored in its own `layout.txt` (`boards/shields/<shield>/layout.txt`), a
 plain-text grid format (documented in comments at the top of each file), not directly in devicetree. The
 two shields have their own generator script tailored to their grid size (`xiao_split_60` is 5x12,
-`xiao_butterfly_30` is 3x10) — they are not shared, so changes to one script don't affect the other. To
+`nrf_butterfly_30` is 3x10) — they are not shared, so changes to one script don't affect the other. To
 change any layer:
 
 1. Edit the shield's `layout.txt`.
@@ -77,7 +73,7 @@ change any layer:
    ```
 3. Commit both `layout.txt` and the regenerated `.keymap` file.
 
-Key facts about `layout.txt` (using `xiao_split_60`'s 5x12 grid as the example; `xiao_butterfly_30`'s
+Key facts about `layout.txt` (using `xiao_split_60`'s 5x12 grid as the example; `nrf_butterfly_30`'s
 3x10 grid follows the same rules at its own dimensions):
 - Each layer is a 5-row x 12-col grid; columns 0-5 are the left half, 6-11 the right half, laid out in
   physical left-to-right reading order. `|` is a purely visual divider between halves and is ignored by
@@ -90,6 +86,7 @@ Key facts about `layout.txt` (using `xiao_split_60`'s 5x12 grid as the example; 
 - `FHOLD` is a custom hold-tap behavior (`hold_layer`, `balanced` flavor, 200ms tapping term, emitted by
   the generator into the output file) — hold-taps `f` to the `f_hold` layer, tap types the letter `f`.
   If you add more hold-tap keys, extend the behavior block the generator emits, not the `.keymap` output.
+  This behavior is specific to `xiao_split_60`'s generator; `nrf_butterfly_30`'s doesn't define one.
 
 ## Build / CI
 

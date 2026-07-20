@@ -1,10 +1,10 @@
-# Regenerates xiao_butterfly_30.keymap from layout.txt in this same folder.
+# Regenerates nrf_butterfly_30.keymap from layout.txt in this same folder.
 # Usage: powershell -File generate-keymap.ps1
 
 $ErrorActionPreference = 'Stop'
 
 $layoutPath = Join-Path $PSScriptRoot 'layout.txt'
-$keymapPath = Join-Path $PSScriptRoot 'xiao_butterfly_30.keymap'
+$keymapPath = Join-Path $PSScriptRoot 'nrf_butterfly_30.keymap'
 
 $tokenMap = @{
     'ESC' = '&kp ESC'; 'TAB' = '&kp TAB'; 'BSPC' = '&kp BSPC'; 'DEL' = '&kp DEL'
@@ -23,8 +23,6 @@ $tokenMap = @{
     'BT0' = '&bt BT_SEL 0'; 'BT1' = '&bt BT_SEL 1'; 'BT2' = '&bt BT_SEL 2'
     'BT3' = '&bt BT_SEL 3'; 'BT4' = '&bt BT_SEL 4'
     'OUTTOG' = '&out OUT_TOG'; 'BTCLR' = '&bt BT_CLR'
-    'THOLD' = '&hold_layer 1 T'
-    'HHOLD' = '&hold_layer 2 H'
 }
 
 function Resolve-Token([string]$tok, [string]$context) {
@@ -100,21 +98,6 @@ $output = @"
 #include <dt-bindings/zmk/outputs.h>
 
 / {
-    behaviors {
-        // Hold T: tap = letter t, hold = sym layer (symbols).
-        // Hold H: tap = letter h, hold = num layer (numbers).
-        // "balanced" flavor: resolves to hold when another key is held
-        // alongside it, not just tapped quickly in sequence.
-        hold_layer: hold_layer {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "balanced";
-            tapping-term-ms = <200>;
-            bindings = <&mo>, <&kp>;
-            display-name = "Hold Layer";
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 

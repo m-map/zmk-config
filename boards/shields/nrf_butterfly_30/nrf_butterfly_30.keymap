@@ -1,0 +1,27 @@
+﻿// GENERATED FILE -- edit layout.txt and run generate-keymap.ps1 instead.
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+
+/ {
+    keymap {
+        compatible = "zmk,keymap";
+
+        base {
+            bindings = <
+&kp Q &kp W &kp F &kp P &kp G &kp J &kp L &kp U &kp Y &to 1
+&kp A &kp R &kp S &kp T &kp D &kp H &kp N &kp E &kp I &kp O
+&kp Z &kp X &kp C &kp V &kp B &kp SPACE &kp K &kp M &kp COMMA &kp DOT
+            >;
+        };
+
+        layer2 {
+            bindings = <
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &to 0
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans &kp RCTRL &kp RSHFT
+            >;
+        };
+    };
+};

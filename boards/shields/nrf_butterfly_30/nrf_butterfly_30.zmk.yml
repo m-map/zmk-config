@@ -1,0 +1,10 @@
+file_format: "1"
+id: nrf_butterfly_30
+name: nrf butterfly 30
+type: shield
+
+features:
+  - keys
+
+requires:
+  - seeed_xiao

@@ -1,0 +1,6 @@
+if SHIELD_NRF_BUTTERFLY_30
+
+config ZMK_KEYBOARD_NAME
+    default "nrf butterfly 30"
+
+endif # SHIELD_NRF_BUTTERFLY_30

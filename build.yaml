@@ -24,4 +24,4 @@ include:
   - board: seeeduino_xiao_ble
     shield: xiao_split_60_right
   - board: seeeduino_xiao_ble
-    shield: xiao_butterfly_30
+    shield: nrf_butterfly_30
