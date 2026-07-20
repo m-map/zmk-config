@@ -45,9 +45,13 @@ controllers (`seeeduino_xiao_ble` board):
     `xiao_butterfly_30.zmk.yml` — same roles as their `xiao_split_60` counterparts.
   - `layout.txt` / `generate-keymap.ps1` / `xiao_butterfly_30.keymap` — same generated-keymap workflow as
     `xiao_split_60` (see "Editing the keymap" below), but for a 3-row x 10-col grid instead of 5x12.
-    Layers: `base` (Colemak-DH letters), `T` (symbols, held via the `T` key), `H` (numbers, held via the
-    `H` key), `layer2` (mods, toggled via a dedicated key). `THOLD`/`HHOLD` are this shield's hold-tap
-    tokens, analogous to `xiao_split_60`'s `FHOLD`.
+    Layers: `base` (Colemak-DH letters), `sym` (symbols, held via the `T` key), `num` (numbers, held via
+    the `H` key), `layer2` (mods, toggled via a dedicated key). `THOLD`/`HHOLD` are this shield's hold-tap
+    tokens, analogous to `xiao_split_60`'s `FHOLD`. Note layer *node names* must not be bare A-Z letters
+    (e.g. `T`, `H`) — `dt-bindings/zmk/keys.h` `#define`s every letter as its HID keycode, and devicetree
+    files go through the C preprocessor first, so a node literally named `T {` gets macro-substituted into
+    a number before the devicetree compiler ever sees it. `THOLD`/`HHOLD`'s own tap arguments to `&kp` are
+    unaffected since a numeric substitution there is exactly the intent.
 - `build.yaml` — GitHub Actions build matrix: builds `seeeduino_xiao_ble` + `xiao_split_60_left`,
   `+ xiao_split_60_right`, and `+ xiao_butterfly_30`.
 - `.github/workflows/build.yml` — CI entry point; delegates to ZMK's reusable

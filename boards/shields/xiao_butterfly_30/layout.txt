@@ -10,7 +10,14 @@
 # doesn't matter.
 #
 # Layer order in this file IS the layer index (0-based) used by MO/TOG/TO
-# tokens below. Currently: 0=base, 1=T, 2=H, 3=layer2.
+# tokens below. Currently: 0=base, 1=sym, 2=num, 3=layer2.
+#
+# Layer node names must not be bare A-Z letters: dt-bindings/zmk/keys.h
+# #defines every letter as its HID keycode macro, devicetree files go through
+# the C preprocessor first, and a node named e.g. "T {" gets macro-substituted
+# into a number before the devicetree compiler ever sees it -- hence "sym"/
+# "num" instead of "T"/"H" here (the THOLD/HHOLD *tap* bindings still
+# correctly use bare T/H as keycode arguments to &kp).
 #
 # Token reference:
 #   A-Z, 0-9                    a letter or digit key
@@ -20,9 +27,9 @@
 #   TRNS                              transparent -- falls through to the
 #                                      next active layer below this one
 #   NONE                              key does nothing
-#   THOLD                             hold: T key -> T layer (symbols)
+#   THOLD                             hold: T key -> sym layer (symbols)
 #                                      tap: T key -> letter t
-#   HHOLD                             hold: H key -> H layer (numbers)
+#   HHOLD                             hold: H key -> num layer (numbers)
 #                                      tap: H key -> letter h
 #   MO<n>                             hold: momentary-activate layer n
 #   TOG<n>                            press: toggle layer n on/off
@@ -38,12 +45,12 @@ Q     W     F     P     G     | J     L     U     Y     TOG3
 A     R     S     THOLD D     | HHOLD N     E     I     O
 Z     X     C     V     B     | SPACE K     M     COMMA DOT
 
-[T]
+[sym]
 GRAVE TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  MINUS EQUAL BSPC
 TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  LBKT  RBKT  BSLH  ENTER
 LSFT  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  COLON SQT   FSLH
 
-[H]
+[num]
 1     2     3     4     5     | 6     7     8     9     0
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS

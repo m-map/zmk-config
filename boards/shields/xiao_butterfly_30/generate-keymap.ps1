@@ -101,8 +101,8 @@ $output = @"
 
 / {
     behaviors {
-        // Hold T: tap = letter t, hold = T layer (symbols).
-        // Hold H: tap = letter h, hold = H layer (numbers).
+        // Hold T: tap = letter t, hold = sym layer (symbols).
+        // Hold H: tap = letter h, hold = num layer (numbers).
         // "balanced" flavor: resolves to hold when another key is held
         // alongside it, not just tapped quickly in sequence.
         hold_layer: hold_layer {
