@@ -10,7 +10,7 @@ $tokenMap = @{
     'ESC' = '&kp ESC'; 'TAB' = '&kp TAB'; 'BSPC' = '&kp BSPC'; 'DEL' = '&kp DEL'
     'ENTER' = '&kp ENTER'; 'SPACE' = '&kp SPACE'
     'LSFT' = '&kp LSHFT'; 'RSFT' = '&kp RSHFT'; 'LCTL' = '&kp LCTRL'; 'RCTL' = '&kp RCTRL'
-    'LALT' = '&kp LALT'; 'LGUI' = '&kp LGUI'
+    'LALT' = '&kp LALT'; 'LGUI' = '&kp LGUI'; 'COMMAND' = '&kp LGUI'
     'GRAVE' = '&kp GRAVE'; 'MINUS' = '&kp MINUS'; 'EQUAL' = '&kp EQUAL'
     'LBKT' = '&kp LBKT'; 'RBKT' = '&kp RBKT'; 'BSLH' = '&kp BSLH'
     'SEMI' = '&kp SEMI'; 'SQT' = '&kp SQT'; 'COMMA' = '&kp COMMA'
@@ -22,8 +22,8 @@ $tokenMap = @{
     'BOOT' = '&bootloader'
     'BT0' = '&bt BT_SEL 0'; 'BT1' = '&bt BT_SEL 1'; 'BT2' = '&bt BT_SEL 2'
     'BT3' = '&bt BT_SEL 3'; 'BT4' = '&bt BT_SEL 4'
-    'OUTTOG' = '&out OUT_TOG'; 'BTCLR' = '&bt BT_CLR'
-    'TSYM' = '&hold_layer_slow 3 T'; 'NNUM' = '&hold_layer 2 N'
+    'OUTTOG' = '&out OUT_TOG'; 'OUTUSB' = '&out OUT_USB'; 'OUTBLE' = '&out OUT_BLE'; 'BTCLR' = '&bt BT_CLR'
+    'TSYM' = '&hold_layer 3 T'; 'NNUM' = '&hold_layer 2 N'
 }
 
 function Resolve-Token([string]$tok, [string]$context) {
@@ -104,23 +104,15 @@ $output = @"
         // other key pressed while the key is held resolves to the layer (not
         // the letter), matching the original Arduino firmware's layer-tap logic.
         //
-        // hold_layer (200ms) drives N -> num. hold_layer_slow (750ms) drives
-        // T -> sym, giving a longer window to tap 't' before sym engages.
+        // hold_layer drives both N -> num and T -> sym. The 750ms hold window
+        // gives a long window to tap the letter before the layer engages.
         hold_layer: hold_layer {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "hold-preferred";
-            tapping-term-ms = <200>;
-            bindings = <&mo>, <&kp>;
-            display-name = "Hold Layer";
-        };
-        hold_layer_slow: hold_layer_slow {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "hold-preferred";
             tapping-term-ms = <750>;
             bindings = <&mo>, <&kp>;
-            display-name = "Hold Layer Slow";
+            display-name = "Hold Layer";
         };
     };
 
