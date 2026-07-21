@@ -51,7 +51,7 @@ controllers (`seeeduino_xiao_ble` board):
     Four layers: `base` (letters, Colemak-DH), `l2` (toggled by `TOG1` on the top-right key; adds
     ctrl/shift on the `,`/`.` keys), `num` (number row) and `sym` (symbols/brackets). Layer order sets
     priority sym > num > l2 > base. `sym`/`num` are momentary via the `TSYM`/`NNUM` hold-taps on the T/N
-    keys (tap = the letter, hold = the layer); `TSYM` uses a longer 750ms hold window, `NNUM` uses 200ms.
+    keys (tap = the letter, hold = the layer), both using a 750ms hold window.
     While `l2` is active the XIAO's red onboard LED lights (see `src/layer_led.c`). This mirrors the
     board's original Arduino firmware.
 - `build.yaml` — GitHub Actions build matrix: builds `seeeduino_xiao_ble` + `xiao_split_60_left`
@@ -98,8 +98,8 @@ Key facts about `layout.txt` (using `xiao_split_60`'s 5x12 grid as the example; 
 - `FHOLD` is a custom hold-tap behavior (`hold_layer`, `balanced` flavor, 200ms tapping term, emitted by
   the generator into the output file) — hold-taps `f` to the `f_hold` layer, tap types the letter `f`.
   If you add more hold-tap keys, extend the behavior block the generator emits, not the `.keymap` output.
-  `nrf_butterfly_30`'s generator emits two `hold_layer` behaviors (both `hold-preferred`): `hold_layer`
-  (200ms, token `NNUM`, N->num) and `hold_layer_slow` (750ms, token `TSYM`, T->sym).
+  `nrf_butterfly_30`'s generator emits a single `hold_layer` behavior (`hold-preferred`, 750ms tapping
+  term) shared by both hold-tap tokens: `NNUM` (N->num) and `TSYM` (T->sym).
 
 ## Build / CI
 

@@ -10,23 +10,15 @@
         // other key pressed while the key is held resolves to the layer (not
         // the letter), matching the original Arduino firmware's layer-tap logic.
         //
-        // hold_layer (200ms) drives N -> num. hold_layer_slow (750ms) drives
-        // T -> sym, giving a longer window to tap 't' before sym engages.
+        // hold_layer drives both N -> num and T -> sym. The 750ms hold window
+        // gives a long window to tap the letter before the layer engages.
         hold_layer: hold_layer {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "hold-preferred";
-            tapping-term-ms = <200>;
-            bindings = <&mo>, <&kp>;
-            display-name = "Hold Layer";
-        };
-        hold_layer_slow: hold_layer_slow {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "hold-preferred";
             tapping-term-ms = <750>;
             bindings = <&mo>, <&kp>;
-            display-name = "Hold Layer Slow";
+            display-name = "Hold Layer";
         };
     };
 
@@ -36,7 +28,7 @@
         base {
             bindings = <
 &kp Q &kp W &kp F &kp P &kp G &kp J &kp L &kp U &kp Y &tog 1
-&kp A &kp R &kp S &hold_layer_slow 3 T &kp D &kp H &hold_layer 2 N &kp E &kp I &kp O
+&kp A &kp R &kp S &hold_layer 3 T &kp D &kp H &hold_layer 2 N &kp E &kp I &kp O
 &kp Z &kp X &kp C &kp V &kp B &kp SPACE &kp K &kp M &kp COMMA &kp DOT
             >;
         };
