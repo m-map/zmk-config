@@ -1,10 +1,20 @@
 // Unibody (non-split) 30-key board, single Seeeduino XIAO BLE.
 //
-// Electrical matrix is 5 rows (xiao_d 0-4) x 6 columns (xiao_d 5,10,6,9,7,8),
-// diode col2row. Each physical row of 10 keys is wired as a left half on one
-// column pin and a right half (mirrored) on the paired column pin -- see the
-// matrix-transform map below, which reads out in normal left-to-right,
-// top-to-bottom physical order regardless of the underlying wiring.
+// Electrical matrix is 5 sense lines (xiao_d 0-4) x 6 drive lines
+// (xiao_d 5,10,6,9,7,8), 30 keys. Scanning is ACTIVE-LOW: each drive line is
+// pulsed low while the sense lines are read through internal pull-ups (a
+// pressed key reads low), matching this board's known-good Arduino firmware.
+// The switch diodes conduct from the sense lines toward the drive lines, so
+// the drive lines have to be the driven outputs -- in ZMK's kscan-gpio-matrix
+// that is diode-direction = "col2row" (outputs = col-gpios = the drive lines,
+// inputs = row-gpios = the sense lines). Note the active-low/pull-up polarity:
+// xiao_split_60 wires its diodes the other way and scans active-high, so do not
+// copy that shield's GPIO flags here.
+//
+// Each physical row of 10 keys is wired as a left half on one drive pin and a
+// right half (mirrored) on the paired drive pin -- see the matrix-transform map
+// below, which reads out in normal left-to-right, top-to-bottom physical order
+// regardless of the underlying wiring.
 
 #include <dt-bindings/zmk/matrix_transform.h>
 
@@ -22,20 +32,20 @@
         wakeup-source;
 
         col-gpios
-            = <&xiao_d 5 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 10 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 6 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 9 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 7 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 8 GPIO_ACTIVE_HIGH>
+            = <&xiao_d 5 GPIO_ACTIVE_LOW>
+            , <&xiao_d 10 GPIO_ACTIVE_LOW>
+            , <&xiao_d 6 GPIO_ACTIVE_LOW>
+            , <&xiao_d 9 GPIO_ACTIVE_LOW>
+            , <&xiao_d 7 GPIO_ACTIVE_LOW>
+            , <&xiao_d 8 GPIO_ACTIVE_LOW>
             ;
 
         row-gpios
-            = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            = <&xiao_d 0 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&xiao_d 1 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&xiao_d 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&xiao_d 3 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
+            , <&xiao_d 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
             ;
     };
 
