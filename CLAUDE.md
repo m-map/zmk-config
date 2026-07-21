@@ -51,8 +51,7 @@ controllers (`seeeduino_xiao_ble` board):
     Four layers: `base` (letters, Colemak-DH), `l2` (toggled by `TOG1` on the top-right key; adds
     ctrl/shift on the `,`/`.` keys), `num` (number row) and `sym` (symbols/brackets). Layer order sets
     priority sym > num > l2 > base. `sym`/`num` are momentary via the `TSYM`/`NNUM` hold-taps on the T/N
-    keys (tap = the letter, hold = the layer), both using a 750ms hold window.
-    While `l2` is active the XIAO's red onboard LED lights (see `src/layer_led.c`). This mirrors the
+    keys (tap = the letter, hold = the layer), both using a 750ms hold window. This mirrors the
     board's original Arduino firmware.
 - `build.yaml` — GitHub Actions build matrix: builds `seeeduino_xiao_ble` + `xiao_split_60_left`
   `+ xiao_split_60_right`, and `+ nrf_butterfly_30`.
@@ -60,12 +59,7 @@ controllers (`seeeduino_xiao_ble` board):
   `build-user-config.yml@v0.3` workflow. This is the actual way firmware gets built — there is no local
   build tooling checked into the repo.
 - `zephyr/module.yml` — makes the repo a Zephyr module: `board_root: .` (so Zephyr/ZMK discovers
-  `boards/shields` at the repo root) and `cmake: .` (so the top-level `CMakeLists.txt` compiles extra C
-  into the app).
-- `CMakeLists.txt` / `src/layer_led.c` — custom C for the app. `layer_led.c` is a
-  `zmk_layer_state_changed` listener that lights the XIAO's red onboard LED (`led0`) while the `l2` layer
-  is active on `nrf_butterfly_30`; `CMakeLists.txt` guards it on `CONFIG_SHIELD_NRF_BUTTERFLY_30` so it is
-  inert for the `xiao_split_60` builds.
+  `boards/shields` at the repo root).
 - `.zmk/` — a local, gitignored west workspace (west topdir, vendored `zmk` firmware checkout). It's a
   local build/dev sandbox, not part of the tracked config; don't assume its contents are complete or
   in sync with the tracked `config/` and `boards/` directories.
