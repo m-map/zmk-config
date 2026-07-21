@@ -9,8 +9,12 @@
 # divider for readability -- the generator ignores it, so exact spacing
 # doesn't matter.
 #
-# Layer order in this file IS the layer index (0-based) used by MO/TOG/TO
-# tokens below. Currently: 0=base, 1=layer2.
+# Layer order in this file IS the layer index (0-based) used by MO/TOG/TO and
+# the TSYM/HNUM hold-taps below. Currently: 0=base, 1=l2, 2=num, 3=sym.
+#
+# ZMK resolves a key from the highest-numbered *active* layer that isn't
+# transparent there, so this order gives priority sym > num > l2 > base,
+# matching the original Arduino firmware.
 #
 # Token reference:
 #   A-Z, 0-9                    a letter or digit key
@@ -24,17 +28,29 @@
 #   TOG<n>                            press: toggle layer n on/off
 #   TO<n>                             press: switch to layer n only,
 #                                      deactivating every other layer
+#   TSYM                              tap = t, hold = momentary sym layer (3)
+#   HNUM                              tap = h, hold = momentary num layer (2)
 #   BOOT                              reboot into bootloader (for reflashing)
 #   BT0 BT1 BT2 BT3 BT4               select Bluetooth profile 0-4
 #   OUTTOG                            toggle USB/BLE output
 #   BTCLR                             clear current Bluetooth profile's bond
 
 [base]
-Q     W     F     P     G     | J     L     U     Y     TO1
-A     R     S     T     D     | H     N     E     I     O
+Q     W     F     P     G     | J     L     U     Y     TOG1
+A     R     S     TSYM  D     | HNUM  N     E     I     O
 Z     X     C     V     B     | SPACE K     M     COMMA DOT
 
-[layer2]
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TO0
+[l2]
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  RCTL  RSFT
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  LCTL  LSFT
+
+[num]
+1     2     3     4     5     | 6     7     8     9     0
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+
+[sym]
+GRAVE TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  MINUS EQUAL BSPC
+TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  LBKT  RBKT  BSLH  ENTER
+LSFT  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  COLON SQT   FSLH

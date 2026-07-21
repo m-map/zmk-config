@@ -23,6 +23,7 @@ $tokenMap = @{
     'BT0' = '&bt BT_SEL 0'; 'BT1' = '&bt BT_SEL 1'; 'BT2' = '&bt BT_SEL 2'
     'BT3' = '&bt BT_SEL 3'; 'BT4' = '&bt BT_SEL 4'
     'OUTTOG' = '&out OUT_TOG'; 'BTCLR' = '&bt BT_CLR'
+    'TSYM' = '&hold_layer 3 T'; 'HNUM' = '&hold_layer 2 H'
 }
 
 function Resolve-Token([string]$tok, [string]$context) {
@@ -98,6 +99,21 @@ $output = @"
 #include <dt-bindings/zmk/outputs.h>
 
 / {
+    behaviors {
+        // Tap = letter, hold = momentary layer. "hold-preferred" flavor:
+        // any other key pressed while T/H is held resolves to the layer
+        // (not the letter), matching the original Arduino firmware's
+        // layer-tap logic. 200ms tapping term.
+        hold_layer: hold_layer {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&kp>;
+            display-name = "Hold Layer";
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
