@@ -10,7 +10,7 @@ $tokenMap = @{
     'ESC' = '&kp ESC'; 'TAB' = '&kp TAB'; 'BSPC' = '&kp BSPC'; 'DEL' = '&kp DEL'
     'ENTER' = '&kp ENTER'; 'SPACE' = '&kp SPACE'
     'LSFT' = '&kp LSHFT'; 'RSFT' = '&kp RSHFT'; 'LCTL' = '&kp LCTRL'; 'RCTL' = '&kp RCTRL'
-    'LALT' = '&kp LALT'; 'LGUI' = '&kp LGUI'
+    'LALT' = '&kp LALT'; 'LGUI' = '&kp LGUI'; 'COMMAND' = '&kp LGUI'
     'GRAVE' = '&kp GRAVE'; 'MINUS' = '&kp MINUS'; 'EQUAL' = '&kp EQUAL'
     'LBKT' = '&kp LBKT'; 'RBKT' = '&kp RBKT'; 'BSLH' = '&kp BSLH'
     'SEMI' = '&kp SEMI'; 'SQT' = '&kp SQT'; 'COMMA' = '&kp COMMA'
@@ -22,7 +22,7 @@ $tokenMap = @{
     'BOOT' = '&bootloader'
     'BT0' = '&bt BT_SEL 0'; 'BT1' = '&bt BT_SEL 1'; 'BT2' = '&bt BT_SEL 2'
     'BT3' = '&bt BT_SEL 3'; 'BT4' = '&bt BT_SEL 4'
-    'OUTTOG' = '&out OUT_TOG'; 'BTCLR' = '&bt BT_CLR'
+    'OUTTOG' = '&out OUT_TOG'; 'OUTUSB' = '&out OUT_USB'; 'OUTBLE' = '&out OUT_BLE'; 'BTCLR' = '&bt BT_CLR'
     'TSYM' = '&hold_layer_slow 3 T'; 'NNUM' = '&hold_layer 2 N'
 }
 

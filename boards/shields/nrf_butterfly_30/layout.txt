@@ -20,6 +20,7 @@
 #   A-Z, 0-9                    a letter or digit key
 #   ESC TAB BSPC DEL ENTER SPACE      named keys
 #   LSFT RSFT LCTL RCTL LALT LGUI     modifiers
+#   COMMAND                           Mac Command key (alias for LGUI)
 #   GRAVE MINUS EQUAL LBKT RBKT BSLH SEMI SQT COMMA DOT FSLH COLON   punctuation
 #   TRNS                              transparent -- falls through to the
 #                                      next active layer below this one
@@ -34,6 +35,8 @@
 #   BOOT                              reboot into bootloader (for reflashing)
 #   BT0 BT1 BT2 BT3 BT4               select Bluetooth profile 0-4
 #   OUTTOG                            toggle USB/BLE output
+#   OUTUSB                            force keyboard output over USB
+#   OUTBLE                            force keyboard output over Bluetooth
 #   BTCLR                             clear current Bluetooth profile's bond
 
 [base]
@@ -47,9 +50,9 @@ TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  LCTL  LSFT
 
 [num]
-1     2     3     4     5     | 6     7     8     9     0
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+1     2     3     4     5       | 6     7      8      9    0
+TRNS  TRNS  TRNS  TRNS  TRNS    | BTCLR TRNS   TRNS   BT0  BT1
+TRNS  TRNS  TRNS  TRNS  COMMAND | TRNS  OUTUSB OUTBLE TRNS LSFT
 
 [sym]
 GRAVE TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  MINUS EQUAL BSPC
