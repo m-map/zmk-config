@@ -50,14 +50,22 @@ controllers (`seeeduino_xiao_ble` board):
     `xiao_split_60` (see "Editing the keymap" below), but for a 3-row x 10-col grid instead of 5x12.
     Four layers: `base` (letters, Colemak-DH), `l2` (toggled by `TOG1` on the top-right key; adds
     ctrl/shift on the `,`/`.` keys), `num` (number row) and `sym` (symbols/brackets). Layer order sets
-    priority sym > num > l2 > base. `num`/`sym` are momentary via the `TSYM`/`HNUM` hold-taps on the T/H
-    keys (tap = the letter, hold = the layer). This mirrors the board's original Arduino firmware.
+    priority sym > num > l2 > base. `sym`/`num` are momentary via the `TSYM`/`NNUM` hold-taps on the T/N
+    keys (tap = the letter, hold = the layer); `TSYM` uses a longer 750ms hold window, `NNUM` uses 200ms.
+    While `l2` is active the XIAO's red onboard LED lights (see `src/layer_led.c`). This mirrors the
+    board's original Arduino firmware.
 - `build.yaml` — GitHub Actions build matrix: builds `seeeduino_xiao_ble` + `xiao_split_60_left`
   `+ xiao_split_60_right`, and `+ nrf_butterfly_30`.
 - `.github/workflows/build.yml` — CI entry point; delegates to ZMK's reusable
   `build-user-config.yml@v0.3` workflow. This is the actual way firmware gets built — there is no local
   build tooling checked into the repo.
-- `zephyr/module.yml` — sets `board_root: .` so Zephyr/ZMK discovers `boards/shields` at the repo root.
+- `zephyr/module.yml` — makes the repo a Zephyr module: `board_root: .` (so Zephyr/ZMK discovers
+  `boards/shields` at the repo root) and `cmake: .` (so the top-level `CMakeLists.txt` compiles extra C
+  into the app).
+- `CMakeLists.txt` / `src/layer_led.c` — custom C for the app. `layer_led.c` is a
+  `zmk_layer_state_changed` listener that lights the XIAO's red onboard LED (`led0`) while the `l2` layer
+  is active on `nrf_butterfly_30`; `CMakeLists.txt` guards it on `CONFIG_SHIELD_NRF_BUTTERFLY_30` so it is
+  inert for the `xiao_split_60` builds.
 - `.zmk/` — a local, gitignored west workspace (west topdir, vendored `zmk` firmware checkout). It's a
   local build/dev sandbox, not part of the tracked config; don't assume its contents are complete or
   in sync with the tracked `config/` and `boards/` directories.
@@ -90,8 +98,8 @@ Key facts about `layout.txt` (using `xiao_split_60`'s 5x12 grid as the example; 
 - `FHOLD` is a custom hold-tap behavior (`hold_layer`, `balanced` flavor, 200ms tapping term, emitted by
   the generator into the output file) — hold-taps `f` to the `f_hold` layer, tap types the letter `f`.
   If you add more hold-tap keys, extend the behavior block the generator emits, not the `.keymap` output.
-  `nrf_butterfly_30`'s generator emits the same `hold_layer` behavior (referenced by the `TSYM`/`HNUM`
-  tokens, `hold-preferred` flavor) for its T/H layer-taps.
+  `nrf_butterfly_30`'s generator emits two `hold_layer` behaviors (both `hold-preferred`): `hold_layer`
+  (200ms, token `NNUM`, N->num) and `hold_layer_slow` (750ms, token `TSYM`, T->sym).
 
 ## Build / CI
 

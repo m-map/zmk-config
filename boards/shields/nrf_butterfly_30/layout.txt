@@ -10,7 +10,7 @@
 # doesn't matter.
 #
 # Layer order in this file IS the layer index (0-based) used by MO/TOG/TO and
-# the TSYM/HNUM hold-taps below. Currently: 0=base, 1=l2, 2=num, 3=sym.
+# the TSYM/NNUM hold-taps below. Currently: 0=base, 1=l2, 2=num, 3=sym.
 #
 # ZMK resolves a key from the highest-numbered *active* layer that isn't
 # transparent there, so this order gives priority sym > num > l2 > base,
@@ -28,8 +28,9 @@
 #   TOG<n>                            press: toggle layer n on/off
 #   TO<n>                             press: switch to layer n only,
 #                                      deactivating every other layer
-#   TSYM                              tap = t, hold = momentary sym layer (3)
-#   HNUM                              tap = h, hold = momentary num layer (2)
+#   TSYM                              tap = t, hold = momentary sym layer (3);
+#                                      750ms hold window before sym engages
+#   NNUM                              tap = n, hold = momentary num layer (2)
 #   BOOT                              reboot into bootloader (for reflashing)
 #   BT0 BT1 BT2 BT3 BT4               select Bluetooth profile 0-4
 #   OUTTOG                            toggle USB/BLE output
@@ -37,7 +38,7 @@
 
 [base]
 Q     W     F     P     G     | J     L     U     Y     TOG1
-A     R     S     TSYM  D     | HNUM  N     E     I     O
+A     R     S     TSYM  D     | H     NNUM  E     I     O
 Z     X     C     V     B     | SPACE K     M     COMMA DOT
 
 [l2]
