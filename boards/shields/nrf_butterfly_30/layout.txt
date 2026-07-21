@@ -10,7 +10,7 @@
 # doesn't matter.
 #
 # Layer order in this file IS the layer index (0-based) used by MO/TOG/TO and
-# the TSYM/NNUM hold-taps below. Currently: 0=base, 1=l2, 2=num, 3=sym.
+# the TSYM/NNUM hold-taps below. Currently: 0=base, 1=l2, 2=num, 3=sym, 4=fn.
 #
 # ZMK resolves a key from the highest-numbered *active* layer that isn't
 # transparent there, so this order gives priority sym > num > l2 > base,
@@ -52,9 +52,14 @@ TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  LCTL  LSFT
 [num]
 1     2     3     4     5       | 6     7      8      9    0
 TRNS  TRNS  TRNS  TRNS  TRNS    | BTCLR TRNS   TRNS   BT0  BT1
-TRNS  TRNS  TRNS  TRNS  COMMAND | TRNS  OUTUSB OUTBLE TRNS LSFT
+TRNS  TRNS  TRNS  TRNS  COMMAND | TRNS  OUTUSB OUTBLE MO4  LSFT
 
 [sym]
 GRAVE TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  MINUS EQUAL BSPC
 TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  LBKT  RBKT  BSLH  ENTER
 LSFT  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  COLON SQT   FSLH
+
+[fn]
+F1    F2    F3    F4    F5    | F6    F7    F8    F9    F10
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
