@@ -18,12 +18,14 @@ $tokenMap = @{
     'END' = '&kp END'; 'UP' = '&kp UP'; 'DOWN' = '&kp DOWN'
     'LEFT' = '&kp LEFT'; 'RIGHT' = '&kp RIGHT'
     'MUTE' = '&kp C_MUTE'; 'APP' = '&kp K_APP'
+    'VOLU' = '&kp C_VOL_UP'; 'VOLD' = '&kp C_VOL_DN'
+    'BRIU' = '&kp C_BRI_UP'; 'BRID' = '&kp C_BRI_DN'
     'TRNS' = '&trans'; 'NONE' = '&none'
     'BOOT' = '&bootloader'
     'BT0' = '&bt BT_SEL 0'; 'BT1' = '&bt BT_SEL 1'; 'BT2' = '&bt BT_SEL 2'
     'BT3' = '&bt BT_SEL 3'; 'BT4' = '&bt BT_SEL 4'
-    'OUTTOG' = '&out OUT_TOG'; 'BTCLR' = '&bt BT_CLR'
-    'FHOLD' = '&hold_layer 1 F'
+    'OUTTOG' = '&out OUT_TOG'; 'OUTUSB' = '&out OUT_USB'; 'OUTBLE' = '&out OUT_BLE'
+    'BTCLR' = '&bt BT_CLR'
 }
 
 function Resolve-Token([string]$tok, [string]$context) {
@@ -99,22 +101,6 @@ $output = @"
 #include <dt-bindings/zmk/outputs.h>
 
 / {
-    behaviors {
-        // Hold F: tap = letter f, hold = f_hold layer (punctuation).
-        // "balanced" flavor: resolves to hold when another key is held
-        // alongside it (e.g. F + Shift), not just tapped quickly in
-        // sequence -- needed so "hold F, hold Shift, tap -" reliably
-        // gives an underscore instead of sometimes typing "f".
-        hold_layer: hold_layer {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "balanced";
-            tapping-term-ms = <200>;
-            bindings = <&mo>, <&kp>;
-            display-name = "Hold Layer";
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 

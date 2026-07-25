@@ -89,11 +89,12 @@ Key facts about `layout.txt` (using `xiao_split_60`'s 5x12 grid as the example; 
 - The generator (`generate-keymap.ps1`) hard-fails on: a row with != 12 tokens, a layer with != 5 rows,
   and any unrecognized token (with a pointer to add it to `$tokenMap` in the script). Fix the underlying
   `layout.txt` on any of these rather than patching the generated `.keymap`.
-- `FHOLD` is a custom hold-tap behavior (`hold_layer`, `balanced` flavor, 200ms tapping term, emitted by
-  the generator into the output file) — hold-taps `f` to the `f_hold` layer, tap types the letter `f`.
-  If you add more hold-tap keys, extend the behavior block the generator emits, not the `.keymap` output.
-  `nrf_butterfly_30`'s generator emits a single `hold_layer` behavior (`tap-preferred`, 300ms tapping
-  term) shared by both hold-tap tokens: `NNUM` (N->num) and `TSYM` (T->sym).
+- `xiao_split_60` has no hold-tap keys — its four layers (`base`, `sys`, `game`, `fn`) are reached via
+  plain `MO<n>`/`TOG<n>`/`TO<n>` tokens (e.g. `sys` is momentary via `MO1` on the bottom row, `game` is a
+  toggle via `TOG2`). If you add hold-tap keys to this shield, you'll need to add a `hold_layer` behavior
+  block back into `generate-keymap.ps1`'s output template (see `nrf_butterfly_30`'s generator for the
+  pattern — it emits a single `hold_layer` behavior, `tap-preferred` flavor, 300ms tapping term, shared
+  by its `NNUM`/`TSYM` hold-tap tokens).
 
 ## Build / CI
 

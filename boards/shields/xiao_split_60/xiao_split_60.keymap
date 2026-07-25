@@ -5,22 +5,6 @@
 #include <dt-bindings/zmk/outputs.h>
 
 / {
-    behaviors {
-        // Hold F: tap = letter f, hold = f_hold layer (punctuation).
-        // "balanced" flavor: resolves to hold when another key is held
-        // alongside it (e.g. F + Shift), not just tapped quickly in
-        // sequence -- needed so "hold F, hold Shift, tap -" reliably
-        // gives an underscore instead of sometimes typing "f".
-        hold_layer: hold_layer {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "balanced";
-            tapping-term-ms = <200>;
-            bindings = <&mo>, <&kp>;
-            display-name = "Hold Layer";
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 
@@ -28,39 +12,29 @@
             bindings = <
 &kp ESC &kp N1 &kp N2 &kp N3 &kp N4 &kp N5 &kp N6 &kp N7 &kp N8 &kp N9 &kp N0 &kp BSPC
 &kp TAB &kp Q &kp W &kp E &kp R &kp T &kp Y &kp U &kp I &kp O &kp P &kp DEL
-&kp LSHFT &kp A &kp S &kp D &hold_layer 1 F &kp G &kp H &kp J &kp K &kp L &kp SEMI &kp SQT
-&kp LALT &kp Z &kp X &kp C &kp V &kp B &kp N &kp M &kp COMMA &kp DOT &kp FSLH &kp RSHFT
-&kp LCTRL &kp LGUI &to 3 &tog 2 &kp END &kp GRAVE &kp C_MUTE &kp K_APP &kp ENTER &kp SPACE &kp SPACE &mo 4
-            >;
-        };
-
-        f_hold {
-            bindings = <
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &kp MINUS &kp EQUAL &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &kp LBKT &kp RBKT &kp BSLH
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&kp LSHFT &kp A &kp S &kp D &kp F &kp G &kp H &kp J &kp K &kp L &kp SEMI &kp SQT
+&kp LCTRL &kp Z &kp X &kp C &kp V &kp B &kp N &kp M &kp COMMA &kp DOT &kp FSLH &kp RSHFT
+&kp LALT &kp LGUI &tog 2 &mo 1 &kp C_VOL_DN &kp GRAVE &kp C_MUTE &kp C_VOL_UP &kp ENTER &kp SPACE &kp SPACE &mo 3
             >;
         };
 
         sys {
             bindings = <
-&bootloader &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &out OUT_TOG &trans &trans &trans &bt BT_CLR &bootloader
+&out OUT_BLE &out OUT_USB &bt BT_SEL 3 &bt BT_SEL 2 &bt BT_SEL 1 &bt BT_CLR &trans &trans &trans &kp MINUS &kp EQUAL &trans
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &kp LBKT &kp RBKT &kp BSLH
 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &kp C_BRI_DN &trans &trans &kp C_BRI_UP &trans &trans &trans &trans
             >;
         };
 
         game {
             bindings = <
 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans &kp UP &trans &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &kp LEFT &kp DOWN &kp RIGHT &trans &trans
 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &kp UP &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &kp LEFT &kp DOWN &kp RIGHT &trans &trans &trans
-&trans &kp SPACE &to 0 &tog 2 &trans &trans &trans &trans &tog 2 &to 0 &kp SPACE &mo 4
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
             >;
         };
 
