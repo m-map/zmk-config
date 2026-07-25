@@ -100,17 +100,17 @@ $output = @"
 
 / {
     behaviors {
-        // Tap = letter, hold = momentary layer. "hold-preferred" flavor: any
-        // other key pressed while the key is held resolves to the layer (not
-        // the letter), matching the original Arduino firmware's layer-tap logic.
+        // Tap = letter, hold = momentary layer. "tap-preferred" flavor: an
+        // interrupting key press only resolves to the layer if the hold-tap
+        // key is still held past the tapping term; fast rolls (e.g. "to",
+        // "ti") resolve as taps instead of misfiring into the layer.
         //
-        // hold_layer drives both N -> num and T -> sym. The 750ms hold window
-        // gives a long window to tap the letter before the layer engages.
+        // hold_layer drives both N -> num and T -> sym.
         hold_layer: hold_layer {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "hold-preferred";
-            tapping-term-ms = <750>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <300>;
             bindings = <&mo>, <&kp>;
             display-name = "Hold Layer";
         };

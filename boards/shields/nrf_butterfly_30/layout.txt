@@ -30,7 +30,7 @@
 #   TO<n>                             press: switch to layer n only,
 #                                      deactivating every other layer
 #   TSYM                              tap = t, hold = momentary sym layer (3);
-#                                      750ms hold window before sym engages
+#                                      300ms hold window before sym engages
 #   NNUM                              tap = n, hold = momentary num layer (2)
 #   BOOT                              reboot into bootloader (for reflashing)
 #   BT0 BT1 BT2 BT3 BT4               select Bluetooth profile 0-4
