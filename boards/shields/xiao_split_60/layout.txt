@@ -41,7 +41,7 @@ ESC   1     2     3     4     5     | 6     7     8     9     0     DEL
 TAB   Q     W     E     R     T     | Y     U     I     O     P     BSPC
 LSFT  A     S     D     F     G     | H     J     K     L     SEMI  SQT
 LCTL  Z     X     C     V     B     | N     M     COMMA DOT   FSLH  RSFT
-LALT  LGUI  SPACE MO1   VOLD  GRAVE | MUTE  VOLU  TOG2  ENTER SPACE MO3
+LALT  LGUI  MO1   SPACE VOLD  GRAVE | MUTE  VOLU  TOG2  ENTER SPACE MO3
 
 [sys]
 OUTBLE OUTUSB BT3   BT2   BT1   BTCLR | TRNS TRNS  TRNS  MINUS EQUAL TRNS
