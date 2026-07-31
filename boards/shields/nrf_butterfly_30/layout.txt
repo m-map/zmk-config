@@ -1,6 +1,6 @@
 # nrf_butterfly_30 keyboard layout — source of truth for the keymap.
 #
-# Edit this file, then run generate-keymap.ps1 in this same folder to
+# Edit this file, then run generate-keymap.py in this same folder to
 # regenerate nrf_butterfly_30.keymap. Do not hand-edit the .keymap file -- it
 # gets overwritten.
 #
@@ -9,12 +9,14 @@
 # divider for readability -- the generator ignores it, so exact spacing
 # doesn't matter.
 #
-# Layer order in this file IS the layer index (0-based) used by MO/TOG/TO and
-# the TSYM/NNUM hold-taps below. Currently: 0=base, 1=l2, 2=num, 3=sym, 4=fn.
+# Layers are referred to by NAME (the [name] header), not by number. A
+# layer's index (used internally for &mo/&tog/&to) is just its position in
+# this file, top to bottom, starting at 0. Reordering layers in this file
+# changes their index but every reference below uses the name, so nothing
+# needs updating by hand.
 #
-# ZMK resolves a key from the highest-numbered *active* layer that isn't
-# transparent there, so this order gives priority sym > num > l2 > base,
-# matching the original Arduino firmware.
+# ZMK resolves a key from the highest-index *active* layer that isn't
+# transparent there.
 #
 # Token reference:
 #   A-Z, 0-9                    a letter or digit key
@@ -25,41 +27,69 @@
 #   TRNS                              transparent -- falls through to the
 #                                      next active layer below this one
 #   NONE                              key does nothing
-#   MO<n>                             hold: momentary-activate layer n
-#   TOG<n>                            press: toggle layer n on/off
-#   TO<n>                             press: switch to layer n only,
+#   MO<n>                             hold: momentary-activate layer index n
+#   TOG<n>                            press: toggle layer index n on/off
+#   TO<n>                             press: switch to layer index n only,
 #                                      deactivating every other layer
-#   TSYM                              tap = t, hold = momentary sym layer (3);
-#                                      300ms hold window before sym engages
-#   NNUM                              tap = n, hold = momentary num layer (2)
 #   BOOT                              reboot into bootloader (for reflashing)
 #   BT0 BT1 BT2 BT3 BT4               select Bluetooth profile 0-4
 #   OUTTOG                            toggle USB/BLE output
 #   OUTUSB                            force keyboard output over USB
 #   OUTBLE                            force keyboard output over Bluetooth
 #   BTCLR                             clear current Bluetooth profile's bond
+#
+# Layer-reference tokens (by name, matching a [layer] header below):
+#   <LayerName>                 alone: hold layer <LayerName> while held
+#                                (momentary -- same idea as MO<n> but by name)
+#   TOG<LayerName>               press: toggle layer <LayerName> on/off
+#   TO<LayerName>                press: switch to layer <LayerName> only
+#
+# Hold-tap combo tokens: <base><Type><n>, e.g. "ZK1", "DL4", "SEMIL2".
+# <base> is a normal key token (a letter, digit, or word token like SEMI).
+# Tap the key for <base>; hold it (300ms+) with no other key pressed in that
+# window and it acts as the "other side" below instead -- release after
+# holding and nothing is typed, same as tapping a real modifier/layer key
+# and letting go.
+#   <base>L<n>    tap = <base>, hold = momentary layer "L<n>"
+#   <base>T<n>    tap = <base>, hold = toggle layer "T<n>" on/off
+#   <base>K<n>    tap = <base>, hold = the key aliased to K<n> (see "K<n> ="
+#                  lines below a layer -- used for modifiers, e.g. K1 = LSFT)
+#
+# K<n> alias lines (only needed for K-type combos):
+#   K<n> = <token>               defines what holding a "...K<n>" combo sends
 
 [base]
-Q     W     F     P     G     | J     L     U     Y     TOG1
-A     R     S     TSYM  D     | H     NNUM  E     I     O
-Z     X     C     V     B     | SPACE K     M     COMMA DOT
+Q     W     E     R     T     | Y     U     I     O     TOGT1
+A     S     DL4   FL1   G     | H     J     K     L     SEMIL2
+ZK1   XK2   C     VK3   BK4   | SPACE N     M     COMMA DOTK5
 
-[l2]
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  LCTL  LSFT
+K1 = LSFT
+K2 = LCTL
+K3 = LALT
+K4 = COMMAND
+K5 = RSFT
 
-[num]
-1     2     3     4     5       | 6     7      8      9    0
-TRNS  TRNS  TRNS  TRNS  TRNS    | BTCLR TRNS   TRNS   BT0  BT1
-TRNS  TRNS  TRNS  TRNS  COMMAND | TRNS  OUTUSB OUTBLE MO4  LSFT
+[T1]
+TAB   1     2     3     4     | TRNS  TRNS  UP    TRNS   TRNS
+A     Q     W     E     R     | TRNS  LEFT  DOWN  RIGHT  TRNS
+LCTL  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS   TRNS
 
-[sym]
-GRAVE TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  MINUS EQUAL BSPC
+[L1]
+ESC   GRAVE TRNS  TRNS  TRNS  | TRNS  TRNS  MINUS EQUAL BSPC
 TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  LBKT  RBKT  BSLH  ENTER
-LSFT  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  COLON SQT   FSLH
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  COLON SQT   FSLH
 
-[fn]
+[L2]
+1     2     3     4     5     | 6     7      8      9    0
+TRNS  TRNS  TRNS  TRNS  TRNS  | BTCLR BT0    BT1    BT2  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  OUTUSB OUTBLE L3   LSFT
+
+[L3]
 F1    F2    F3    F4    F5    | F6    F7    F8    F9    F10
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+
+[L4]
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  UP    TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  LEFT  DOWN  RIGHT TRNS
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS

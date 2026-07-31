@@ -1,4 +1,4 @@
-﻿// GENERATED FILE -- edit layout.txt and run generate-keymap.ps1 instead.
+// GENERATED FILE -- edit layout.txt and run generate-keymap.py instead.
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
@@ -6,12 +6,11 @@
 
 / {
     behaviors {
-        // Tap = letter, hold = momentary layer. "tap-preferred" flavor: an
-        // interrupting key press only resolves to the layer if the hold-tap
-        // key is still held past the tapping term; fast rolls (e.g. "to",
-        // "ti") resolve as taps instead of misfiring into the layer.
-        //
-        // hold_layer drives both N -> num and T -> sym.
+        // Tap = base key, hold = momentary-activate a layer. "tap-preferred"
+        // flavor: an interrupting key press only resolves to the layer if
+        // the hold-tap key is still held past the tapping term; fast rolls
+        // (e.g. "to", "ti") resolve as taps instead of misfiring into the
+        // layer. Drives every "<base>L<n>" combo token.
         hold_layer: hold_layer {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -20,6 +19,31 @@
             bindings = <&mo>, <&kp>;
             display-name = "Hold Layer";
         };
+
+        // Tap = base key, hold = toggle a layer on/off. Same tap-preferred
+        // timing as hold_layer. Drives every "<base>T<n>" combo token.
+        hold_toggle: hold_toggle {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <300>;
+            bindings = <&tog>, <&kp>;
+            display-name = "Hold Toggle Layer";
+        };
+
+        // Tap = base key, hold = a different key (used for modifiers, e.g.
+        // Z taps 'z' but held 300ms+ acts as left shift). Same
+        // tap-preferred timing as hold_layer. Drives every "<base>K<n>"
+        // combo token, where K<n> is defined by a "K<n> = <token>" alias
+        // line in layout.txt.
+        hold_mod: hold_mod {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <300>;
+            bindings = <&kp>, <&kp>;
+            display-name = "Hold Mod";
+        };
     };
 
     keymap {
@@ -27,40 +51,48 @@
 
         base {
             bindings = <
-&kp Q &kp W &kp F &kp P &kp G &kp J &kp L &kp U &kp Y &tog 1
-&kp A &kp R &kp S &hold_layer 3 T &kp D &kp H &hold_layer 2 N &kp E &kp I &kp O
-&kp Z &kp X &kp C &kp V &kp B &kp SPACE &kp K &kp M &kp COMMA &kp DOT
+&kp Q &kp W &kp E &kp R &kp T &kp Y &kp U &kp I &kp O &tog 1
+&kp A &kp S &hold_layer 5 D &hold_layer 2 F &kp G &kp H &kp J &kp K &kp L &hold_layer 3 SEMI
+&hold_mod LSHFT Z &hold_mod LCTRL X &kp C &hold_mod LALT V &hold_mod LGUI B &kp SPACE &kp N &kp M &kp COMMA &hold_mod RSHFT DOT
             >;
         };
 
-        l2 {
+        T1 {
             bindings = <
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &kp LCTRL &kp LSHFT
+&kp TAB &kp N1 &kp N2 &kp N3 &kp N4 &trans &trans &kp UP &trans &trans
+&kp A &kp Q &kp W &kp E &kp R &trans &kp LEFT &kp DOWN &kp RIGHT &trans
+&kp LCTRL &trans &trans &trans &trans &trans &trans &trans &trans &trans
             >;
         };
 
-        num {
+        L1 {
+            bindings = <
+&kp ESC &kp GRAVE &trans &trans &trans &trans &trans &kp MINUS &kp EQUAL &kp BSPC
+&kp TAB &trans &trans &trans &trans &trans &kp LBKT &kp RBKT &kp BSLH &kp ENTER
+&trans &trans &trans &trans &trans &trans &trans &kp LS(SEMI) &kp SQT &kp FSLH
+            >;
+        };
+
+        L2 {
             bindings = <
 &kp N1 &kp N2 &kp N3 &kp N4 &kp N5 &kp N6 &kp N7 &kp N8 &kp N9 &kp N0
-&trans &trans &trans &trans &trans &bt BT_CLR &trans &trans &bt BT_SEL 0 &bt BT_SEL 1
-&trans &trans &trans &trans &kp LGUI &trans &out OUT_USB &out OUT_BLE &mo 4 &kp LSHFT
+&trans &trans &trans &trans &trans &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &trans
+&trans &trans &trans &trans &trans &trans &out OUT_USB &out OUT_BLE &mo 4 &kp LSHFT
             >;
         };
 
-        sym {
-            bindings = <
-&kp GRAVE &trans &trans &trans &trans &trans &trans &kp MINUS &kp EQUAL &kp BSPC
-&kp TAB &trans &trans &trans &trans &trans &kp LBKT &kp RBKT &kp BSLH &kp ENTER
-&kp LSHFT &trans &trans &trans &trans &trans &trans &kp LS(SEMI) &kp SQT &kp FSLH
-            >;
-        };
-
-        fn {
+        L3 {
             bindings = <
 &kp F1 &kp F2 &kp F3 &kp F4 &kp F5 &kp F6 &kp F7 &kp F8 &kp F9 &kp F10
 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+            >;
+        };
+
+        L4 {
+            bindings = <
+&trans &trans &trans &trans &trans &trans &trans &kp UP &trans &trans
+&trans &trans &trans &trans &trans &trans &kp LEFT &kp DOWN &kp RIGHT &trans
 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
             >;
         };

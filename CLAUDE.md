@@ -46,13 +46,16 @@ controllers (`seeeduino_xiao_ble` board):
     ordering.
   - `nrf_butterfly_30-layouts.dtsi`, `Kconfig.shield`, `Kconfig.defconfig`, `nrf_butterfly_30.conf`,
     `nrf_butterfly_30.zmk.yml` — same roles as their `xiao_split_60` counterparts.
-  - `layout.txt` / `generate-keymap.ps1` / `nrf_butterfly_30.keymap` — same generated-keymap workflow as
-    `xiao_split_60` (see "Editing the keymap" below), but for a 3-row x 10-col grid instead of 5x12.
-    Four layers: `base` (letters, Colemak-DH), `l2` (toggled by `TOG1` on the top-right key; adds
-    ctrl/shift on the `,`/`.` keys), `num` (number row) and `sym` (symbols/brackets). Layer order sets
-    priority sym > num > l2 > base. `sym`/`num` are momentary via the `TSYM`/`NNUM` hold-taps on the T/N
-    keys (tap = the letter, hold = the layer), both using a 300ms "tap-preferred" hold window. This
-    mirrors the board's original Arduino firmware.
+  - `layout.txt` / `generate-keymap.py` / `nrf_butterfly_30.keymap` — same generated-keymap workflow as
+    `xiao_split_60` (see "Editing the keymap" below), but for a 3-row x 10-col grid instead of 5x12, and
+    driven by a **Python** generator (`generate-keymap.py`, run with `python3`) instead of PowerShell —
+    this shield's script doesn't require `pwsh` to be installed. Six layers, referred to by *name* rather
+    than number: `base` (letters, Colemak-DH), `T1` (a toggle layer — arrows plus a numpad-ish top row),
+    `L1` (symbols/brackets), `L2` (numbers, Bluetooth profile selection, holds into `L3`), `L3` (F-keys),
+    `L4` (arrows only). Layer index = position in `layout.txt`, top to bottom, starting at 0; every
+    reference elsewhere in the file uses the layer's name, not that index, so reordering layers doesn't
+    require updating references. `base` uses hold-tap "combo" tokens throughout (see "Editing the
+    keymap" below) instead of dedicated hold-tap tokens like `xiao_split_60`'s old `TSYM`/`NNUM` pattern.
 - `build.yaml` — GitHub Actions build matrix: builds `seeeduino_xiao_ble` + `xiao_split_60_left`
   `+ xiao_split_60_right`, and `+ nrf_butterfly_30`.
 - `.github/workflows/build.yml` — CI entry point; delegates to ZMK's reusable
@@ -68,33 +71,52 @@ controllers (`seeeduino_xiao_ble` board):
 
 Each shield's keymap is authored in its own `layout.txt` (`boards/shields/<shield>/layout.txt`), a
 plain-text grid format (documented in comments at the top of each file), not directly in devicetree. The
-two shields have their own generator script tailored to their grid size (`xiao_split_60` is 5x12,
-`nrf_butterfly_30` is 3x10) — they are not shared, so changes to one script don't affect the other. To
-change any layer:
+two shields have their own generator script tailored to their grid size and token grammar
+(`xiao_split_60` is 5x12 and uses PowerShell, `nrf_butterfly_30` is 3x10 and uses Python) — they are not
+shared, so changes to one script don't affect the other. To change any layer:
 
 1. Edit the shield's `layout.txt`.
 2. Regenerate the keymap:
    ```
-   powershell -File boards/shields/<shield>/generate-keymap.ps1
+   powershell -File boards/shields/xiao_split_60/generate-keymap.ps1
+   python3 boards/shields/nrf_butterfly_30/generate-keymap.py
    ```
 3. Commit both `layout.txt` and the regenerated `.keymap` file.
 
 Key facts about `layout.txt` (using `xiao_split_60`'s 5x12 grid as the example; `nrf_butterfly_30`'s
-3x10 grid follows the same rules at its own dimensions):
-- Each layer is a 5-row x 12-col grid; columns 0-5 are the left half, 6-11 the right half, laid out in
-  physical left-to-right reading order. `|` is a purely visual divider between halves and is ignored by
-  the parser.
+3x10 grid follows the same base rules at its own dimensions, plus the extra hold-tap grammar below):
+- Each layer is a grid (5x12 for `xiao_split_60`, 3x10 for `nrf_butterfly_30`); for `xiao_split_60`,
+  columns 0-5 are the left half and 6-11 the right half, laid out in physical left-to-right reading
+  order. `|` is a purely visual divider between halves/sections and is ignored by the parser.
 - Layer order in the file **is** the layer index used by `MO<n>`/`TOG<n>`/`TO<n>` tokens elsewhere in the
   file — inserting or reordering a layer shifts every numeric reference below it.
-- The generator (`generate-keymap.ps1`) hard-fails on: a row with != 12 tokens, a layer with != 5 rows,
-  and any unrecognized token (with a pointer to add it to `$tokenMap` in the script). Fix the underlying
+- The generators hard-fail on: a row with the wrong token count, a layer with the wrong row count, and
+  any unrecognized token (with a pointer to add it to the token map in the script). Fix the underlying
   `layout.txt` on any of these rather than patching the generated `.keymap`.
 - `xiao_split_60` has no hold-tap keys — its four layers (`base`, `sys`, `game`, `fn`) are reached via
   plain `MO<n>`/`TOG<n>`/`TO<n>` tokens (e.g. `sys` is momentary via `MO1` on the bottom row, `game` is a
   toggle via `TOG2`). If you add hold-tap keys to this shield, you'll need to add a `hold_layer` behavior
-  block back into `generate-keymap.ps1`'s output template (see `nrf_butterfly_30`'s generator for the
-  pattern — it emits a single `hold_layer` behavior, `tap-preferred` flavor, 300ms tapping term, shared
-  by its `NNUM`/`TSYM` hold-tap tokens).
+  block to `generate-keymap.ps1`'s output template (see `nrf_butterfly_30`'s generator for the general
+  pattern, though its grammar is richer — see below).
+
+`nrf_butterfly_30`'s `layout.txt` additionally supports (full grammar documented in the file's own header
+comment):
+- **Layer references by name**, not number: a bare token matching a `[LayerName]` header (e.g. `L3`
+  used as a standalone key) holds that layer momentarily; `TOG<LayerName>` toggles it; `TO<LayerName>`
+  switches to it exclusively. The numeric index used in the compiled `&mo`/`&tog`/`&to` is derived from
+  the layer's position in the file, so you never write it by hand.
+- **Hold-tap "combo" tokens**, `<base><Type><n>` (e.g. `ZK1`, `DL4`, `SEMIL2`): tap sends `<base>`; hold
+  past the 300ms tap-preferred window (with no other key pressed meanwhile) sends the "other side"
+  instead, and releasing after a hold sends nothing (same as tapping and releasing a real modifier/layer
+  key). Three types:
+  - `<base>L<n>` — hold = momentary layer `L<n>` (compiles to the `hold_layer` behavior).
+  - `<base>T<n>` — hold = toggle layer `T<n>` on/off (compiles to the `hold_toggle` behavior).
+  - `<base>K<n>` — hold = whatever key `K<n>` is aliased to (compiles to the `hold_mod` behavior).
+    Aliases are defined per-layer with a `K<n> = <token>` line directly under that `[layer]` block (e.g.
+    `K1 = LSFT` under `[base]`) and are typically used for modifiers.
+  All three hold-tap behaviors share the same `tap-preferred`/300ms tuning as `xiao_split_60`'s
+  `hold_layer` pattern, for the same reason: fast rolls resolve as taps instead of misfiring into the
+  held side.
 
 ## Build / CI
 
