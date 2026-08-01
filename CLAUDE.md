@@ -25,7 +25,7 @@ controllers (`seeeduino_xiao_ble` board):
   - `xiao_split_60.conf` — shield-level Kconfig defaults shipped with the shield.
   - `xiao_split_60.zmk.yml` — hardware metadata (id, siblings, required feature `seeed_xiao`).
   - `layout.txt` — **source of truth for the keymap.** See below.
-  - `generate-keymap.ps1` — generates `xiao_split_60.keymap` from `layout.txt`.
+  - `generate-keymap.py` — generates `xiao_split_60.keymap` from `layout.txt` (run with `python3`).
   - `xiao_split_60.keymap` — **generated file, do not hand-edit.** It's overwritten by the generator
     script and carries a "GENERATED FILE" header as a reminder.
 - `config/` — the west manifest self-path for this build:
@@ -48,9 +48,9 @@ controllers (`seeeduino_xiao_ble` board):
     `nrf_butterfly_30.zmk.yml` — same roles as their `xiao_split_60` counterparts.
   - `layout.txt` / `generate-keymap.py` / `nrf_butterfly_30.keymap` — same generated-keymap workflow as
     `xiao_split_60` (see "Editing the keymap" below), but for a 3-row x 10-col grid instead of 5x12, and
-    driven by a **Python** generator (`generate-keymap.py`, run with `python3`) instead of PowerShell —
-    this shield's script doesn't require `pwsh` to be installed. Six layers, referred to by *name* rather
-    than number: `base` (letters, Colemak-DH), `T1` (a toggle layer — arrows plus a numpad-ish top row),
+    driven by its own **Python** generator (`generate-keymap.py`, run with `python3`) — same language as
+    `xiao_split_60`'s generator but a separate script, since the grid size and token grammar differ. Six
+    layers, referred to by *name* rather than number: `base` (letters, Colemak-DH), `T1` (a toggle layer — arrows plus a numpad-ish top row),
     `L1` (symbols/brackets), `L2` (numbers, Bluetooth profile selection, holds into `L3`), `L3` (F-keys),
     `L4` (arrows only). Layer index = position in `layout.txt`, top to bottom, starting at 0; every
     reference elsewhere in the file uses the layer's name, not that index, so reordering layers doesn't
@@ -71,14 +71,14 @@ controllers (`seeeduino_xiao_ble` board):
 
 Each shield's keymap is authored in its own `layout.txt` (`boards/shields/<shield>/layout.txt`), a
 plain-text grid format (documented in comments at the top of each file), not directly in devicetree. The
-two shields have their own generator script tailored to their grid size and token grammar
-(`xiao_split_60` is 5x12 and uses PowerShell, `nrf_butterfly_30` is 3x10 and uses Python) — they are not
-shared, so changes to one script don't affect the other. To change any layer:
+two shields have their own Python generator script tailored to their grid size and token grammar
+(`xiao_split_60` is 5x12, `nrf_butterfly_30` is 3x10) — they are not shared, so changes to one script
+don't affect the other. To change any layer:
 
 1. Edit the shield's `layout.txt`.
 2. Regenerate the keymap:
    ```
-   powershell -File boards/shields/xiao_split_60/generate-keymap.ps1
+   python3 boards/shields/xiao_split_60/generate-keymap.py
    python3 boards/shields/nrf_butterfly_30/generate-keymap.py
    ```
 3. Commit both `layout.txt` and the regenerated `.keymap` file.
@@ -96,7 +96,7 @@ Key facts about `layout.txt` (using `xiao_split_60`'s 5x12 grid as the example; 
 - `xiao_split_60` has no hold-tap keys — its four layers (`base`, `sys`, `game`, `fn`) are reached via
   plain `MO<n>`/`TOG<n>`/`TO<n>` tokens (e.g. `sys` is momentary via `MO1` on the bottom row, `game` is a
   toggle via `TOG2`). If you add hold-tap keys to this shield, you'll need to add a `hold_layer` behavior
-  block to `generate-keymap.ps1`'s output template (see `nrf_butterfly_30`'s generator for the general
+  block to `generate-keymap.py`'s output template (see `nrf_butterfly_30`'s generator for the general
   pattern, though its grammar is richer — see below).
 
 `nrf_butterfly_30`'s `layout.txt` additionally supports (full grammar documented in the file's own header

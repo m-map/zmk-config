@@ -1,4 +1,4 @@
-﻿// GENERATED FILE -- edit layout.txt and run generate-keymap.ps1 instead.
+// GENERATED FILE -- edit layout.txt and run generate-keymap.py instead.
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
@@ -20,7 +20,7 @@
 
         sys {
             bindings = <
-&out OUT_BLE &out OUT_USB &bt BT_SEL 3 &bt BT_SEL 2 &bt BT_SEL 1 &bt BT_CLR &trans &trans &trans &kp MINUS &kp EQUAL &trans
+&out OUT_BLE &out OUT_USB &bt BT_SEL 0 &bt BT_SEL 2 &bt BT_SEL 1 &bt BT_CLR &trans &trans &trans &kp MINUS &kp EQUAL &trans
 &trans &trans &trans &trans &trans &trans &trans &trans &kp UP &kp LBKT &kp RBKT &kp BSLH
 &trans &trans &trans &trans &trans &trans &trans &kp LEFT &kp DOWN &kp RIGHT &trans &trans
 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
