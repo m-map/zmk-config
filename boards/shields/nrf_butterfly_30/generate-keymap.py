@@ -211,15 +211,27 @@ def main():
         }};
 
         // Tap = base key, hold = a different key (used for modifiers, e.g.
-        // Z taps 'z' but held 300ms+ acts as left shift). Same
-        // tap-preferred timing as hold_layer. Drives every "<base>K<n>"
+        // Z taps 'z' but held acts as left shift). Drives every "<base>K<n>"
         // combo token, where K<n> is defined by a "K<n> = <token>" alias
         // line in layout.txt.
+        //
+        // "balanced" + hold-trigger-on-release: if another key is pressed
+        // AND released while this key is still held, that resolves to hold
+        // as soon as the other key releases -- no waiting out the tapping
+        // term -- so holding B and tapping C for Cmd+C feels like a real
+        // chord instead of a laggy timeout. require-prior-idle-ms keeps
+        // ordinary fast typing safe: if this key is pressed within 150ms of
+        // any other keypress, it resolves as a tap immediately, no hold
+        // ever considered. retro-tap is deliberately NOT set: holding a
+        // modifier alone and releasing it with nothing else pressed must
+        // keep producing no output, same as holding a real shift key.
         hold_mod: hold_mod {{
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <300>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-on-release;
             bindings = <&kp>, <&kp>;
             display-name = "Hold Mod";
         }};

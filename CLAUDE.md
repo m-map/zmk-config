@@ -105,18 +105,27 @@ comment):
   used as a standalone key) holds that layer momentarily; `TOG<LayerName>` toggles it; `TO<LayerName>`
   switches to it exclusively. The numeric index used in the compiled `&mo`/`&tog`/`&to` is derived from
   the layer's position in the file, so you never write it by hand.
-- **Hold-tap "combo" tokens**, `<base><Type><n>` (e.g. `ZK1`, `DL4`, `SEMIL2`): tap sends `<base>`; hold
-  past the 300ms tap-preferred window (with no other key pressed meanwhile) sends the "other side"
-  instead, and releasing after a hold sends nothing (same as tapping and releasing a real modifier/layer
-  key). Three types:
+- **Hold-tap "combo" tokens**, `<base><Type><n>` (e.g. `ZK1`, `DL4`, `SEMIL2`): tap sends `<base>`;
+  holding sends the "other side" instead, and releasing after a hold sends nothing (same as tapping
+  and releasing a real modifier/layer key). Three types:
   - `<base>L<n>` — hold = momentary layer `L<n>` (compiles to the `hold_layer` behavior).
   - `<base>T<n>` — hold = toggle layer `T<n>` on/off (compiles to the `hold_toggle` behavior).
   - `<base>K<n>` — hold = whatever key `K<n>` is aliased to (compiles to the `hold_mod` behavior).
     Aliases are defined per-layer with a `K<n> = <token>` line directly under that `[layer]` block (e.g.
     `K1 = LSFT` under `[base]`) and are typically used for modifiers.
-  All three hold-tap behaviors share the same `tap-preferred`/300ms tuning as `xiao_split_60`'s
-  `hold_layer` pattern, for the same reason: fast rolls resolve as taps instead of misfiring into the
-  held side.
+  `hold_layer`/`hold_toggle` use `tap-preferred`/300ms tuning like `xiao_split_60`'s `hold_layer`
+  pattern: fast rolls resolve as taps instead of misfiring into the layer, but a deliberate hold
+  requires holding alone for the full 300ms before it resolves. `hold_mod` (the actual modifier keys:
+  Z/X/V/B/`.`) instead uses `balanced` flavor with `hold-trigger-on-release` and
+  `require-prior-idle-ms = 150`: holding a modifier and tapping-and-releasing another key resolves to
+  a hold+key chord as soon as that other key releases, rather than waiting out a timeout, so it feels
+  like a real modifier; `require-prior-idle-ms` keeps ordinary fast typing safe by forcing a tap
+  whenever the key is pressed within 150ms of other typing. `hold_mod` deliberately does not set
+  `retro-tap` — holding a modifier alone and releasing it with nothing else pressed must keep
+  producing no output, matching how a real modifier key behaves. Positional restriction
+  (`hold-trigger-key-positions`, the usual home-row-mods technique) is deliberately not used here,
+  since `hold_mod`'s modifiers are meant to combine with same-hand letters for shortcuts (e.g.
+  Cmd+Z/X/C/V/A/S are all on the same hand as the B/Command key).
 
 ## Build / CI
 
