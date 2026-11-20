@@ -30,6 +30,7 @@ TOKEN_MAP = {
     "BT3": "&bt BT_SEL 3", "BT4": "&bt BT_SEL 4",
     "OUTTOG": "&out OUT_TOG", "OUTUSB": "&out OUT_USB", "OUTBLE": "&out OUT_BLE",
     "BTCLR": "&bt BT_CLR",
+    "SEMI_RSHIFT": "&hold_right_shift 0 SEMI",
 }
 
 LETTER_RE = re.compile(r"^[A-Z]$")
@@ -191,13 +192,15 @@ def main():
         binding = resolve_token(token, "simultaneous combo", layer_index, key_aliases)
         combo_blocks.append(
             f"        combo_{i} {{\n"
-            f"            timeout-ms = <50>;\n"
+            f"            timeout-ms = <20>;\n"
+            f"            require-prior-idle-ms = <100>;\n"
             f"            key-positions = <{' '.join(map(str, positions))}>;\n"
             f"            layers = <0>;\n"
             f"            bindings = <{binding}>;\n"
             f"        }};"
         )
     combo_body = "\n\n".join(combo_blocks)
+    right_plain_index = layer_index["right_plain"]
 
     output = f"""// GENERATED FILE -- edit layout.txt and run generate-keymap.py instead.
 #include <behaviors.dtsi>
@@ -206,6 +209,18 @@ def main():
 #include <dt-bindings/zmk/outputs.h>
 
 / {{
+    macros {{
+        right_shift_plain: right_shift_plain {{
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <0>;
+            bindings = <&macro_press &mo {right_plain_index} &kp RSHFT>,
+                       <&macro_pause_for_release>,
+                       <&macro_release &mo {right_plain_index} &kp RSHFT>;
+        }};
+    }};
+
     combos {{
         compatible = "zmk,combos";
 
@@ -222,7 +237,7 @@ def main():
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <200>;
+            tapping-term-ms = <150>;
             bindings = <&mo>, <&kp>;
             display-name = "Hold Layer";
         }};
@@ -233,7 +248,7 @@ def main():
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <200>;
+            tapping-term-ms = <150>;
             bindings = <&tog>, <&kp>;
             display-name = "Hold Toggle Layer";
         }};
@@ -256,10 +271,21 @@ def main():
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <200>;
+            tapping-term-ms = <150>;
             hold-trigger-on-release;
             bindings = <&kp>, <&kp>;
             display-name = "Hold Mod";
+        }};
+
+        // Tap semicolon; hold Shift plus a plain right-hand layer.
+        // Balanced flavor preserves fast letter rolls before hold resolves.
+        hold_right_shift: hold_right_shift {{
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <150>;
+            bindings = <&right_shift_plain>, <&kp>;
+            display-name = "Right Shift Plain";
         }};
     }};
 

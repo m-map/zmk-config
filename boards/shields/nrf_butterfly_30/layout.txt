@@ -37,6 +37,8 @@
 #   OUTUSB                            force keyboard output over USB
 #   OUTBLE                            force keyboard output over Bluetooth
 #   BTCLR                             clear current Bluetooth profile's bond
+#   SEMI_RSHIFT                      tap semicolon; hold Right Shift and
+#                                    plain right-hand keys (no layers/combos)
 #
 # Layer-reference tokens (by name, matching a [layer] header below):
 #   <LayerName>                 alone: hold layer <LayerName> while held
@@ -46,7 +48,7 @@
 #
 # Hold-tap combo tokens: <base><Type><n>, e.g. "ZK1", "DL4", "SEMIL2".
 # <base> is a normal key token (a letter, digit, or word token like SEMI).
-# Tap the key for <base>; hold it (200ms+) with no other key pressed in that
+# Tap the key for <base>; hold it (150ms+) with no other key pressed in that
 # window and it acts as the "other side" below instead -- release after
 # holding and nothing is typed, same as tapping a real modifier/layer key
 # and letting go.
@@ -59,20 +61,21 @@
 #   K<n> = <token>               defines what holding a "...K<n>" combo sends
 
 # Simultaneous base-layer combos: output = zero-based physical positions.
-# Keys must be pressed within 50ms. Positions run left-to-right, top-to-bottom.
+# Keys must be pressed within 20ms, after 100ms without another non-modifier
+# keypress, to avoid triggering on fast typing rolls such as Colemak 'point'.
+# Positions run left-to-right, top-to-bottom.
 COMBO BSPC = 8 9
 COMBO ENTER = 18 19
 
 [base]
 Q     W     E     R     T     | Y     U     I     O     P
-AK1   SL4   DL2   FL1   G     | H     J     KL2   L     SEMIK5
+AK1   SL4   DL2   FL1   G     | H     J     KL2   L     SEMI_RSHIFT
 ZK2   X     C     VK3   BK4   | SPACE N     M     COMMA DOT
 
 K1 = LSFT
 K2 = LCTL
 K3 = LALT
 K4 = COMMAND
-K5 = RSFT
 
 [L1]
 ESC   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  MINUS EQUAL GRAVE
@@ -93,3 +96,10 @@ TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  UP    TRNS  TRNS
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  LEFT  DOWN  RIGHT TRNS
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+
+# Highest priority while Right Shift is held. Left-hand bindings fall through.
+# Keycodes stay the same; the host's Colemak layout still translates them.
+[right_plain]
+TRNS  TRNS  TRNS  TRNS  TRNS  | Y     U     I     O     P
+TRNS  TRNS  TRNS  TRNS  TRNS  | H     J     K     L     SEMI
+TRNS  TRNS  TRNS  TRNS  TRNS  | SPACE N     M     COMMA DOT
