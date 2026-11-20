@@ -48,10 +48,10 @@
 #
 # Hold-tap combo tokens: <base><Type><n>, e.g. "ZK1", "DL4", "SEMIL2".
 # <base> is a normal key token (a letter, digit, or word token like SEMI).
-# Tap the key for <base>; hold it (150ms+) with no other key pressed in that
-# window and it acts as the "other side" below instead -- release after
-# holding and nothing is typed, same as tapping a real modifier/layer key
-# and letting go.
+# Tap the key for <base>; hold it for the "other side" below instead.
+# Layer holds use 250ms; modifier holds use 200ms and may resolve earlier
+# when another key is pressed and released. Releasing after a resolved hold
+# types nothing, like releasing a real modifier/layer key.
 #   <base>L<n>    tap = <base>, hold = momentary layer "L<n>"
 #   <base>T<n>    tap = <base>, hold = toggle layer "T<n>" on/off
 #   <base>K<n>    tap = <base>, hold = the key aliased to K<n> (see "K<n> ="

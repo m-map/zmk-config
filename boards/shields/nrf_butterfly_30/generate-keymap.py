@@ -236,7 +236,7 @@ def main():
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <150>;
+            tapping-term-ms = <250>;
             bindings = <&mo>, <&kp>;
             display-name = "Hold Layer";
         }};
@@ -247,7 +247,7 @@ def main():
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <150>;
+            tapping-term-ms = <250>;
             bindings = <&tog>, <&kp>;
             display-name = "Hold Toggle Layer";
         }};
@@ -270,7 +270,7 @@ def main():
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <150>;
+            tapping-term-ms = <200>;
             hold-trigger-on-release;
             bindings = <&kp>, <&kp>;
             display-name = "Hold Mod";
@@ -282,7 +282,7 @@ def main():
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <150>;
+            tapping-term-ms = <200>;
             bindings = <&right_shift_plain>, <&kp>;
             display-name = "Right Shift Plain";
         }};
