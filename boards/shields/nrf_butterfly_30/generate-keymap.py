@@ -200,6 +200,11 @@ def main():
             f"        }};"
         )
     combo_body = "\n\n".join(combo_blocks)
+    combo_node = (
+        '    combos {\n        compatible = "zmk,combos";\n\n'
+        + combo_body + '\n    };\n\n'
+        if combos else ""
+    )
     right_plain_index = layer_index["right_plain"]
 
     output = f"""// GENERATED FILE -- edit layout.txt and run generate-keymap.py instead.
@@ -221,13 +226,7 @@ def main():
         }};
     }};
 
-    combos {{
-        compatible = "zmk,combos";
-
-{combo_body}
-    }};
-
-    behaviors {{
+{combo_node}    behaviors {{
         // Tap = base key, hold = momentary-activate a layer. "tap-preferred"
         // flavor: an interrupting key press only resolves to the layer if
         // the hold-tap key is still held past the tapping term; fast rolls

@@ -60,13 +60,6 @@
 # K<n> alias lines (only needed for K-type combos):
 #   K<n> = <token>               defines what holding a "...K<n>" combo sends
 
-# Simultaneous base-layer combos: output = zero-based physical positions.
-# Keys must be pressed within 20ms, after 100ms without another non-modifier
-# keypress, to avoid triggering on fast typing rolls such as Colemak 'point'.
-# Positions run left-to-right, top-to-bottom.
-COMBO BSPC = 8 9
-COMBO ENTER = 18 19
-
 [base]
 Q     W     E     R     T     | Y     U     I     O     P
 AK1   SL4   DL2   FL1   G     | H     J     KL2   L     SEMI_RSHIFT
@@ -80,7 +73,7 @@ K4 = COMMAND
 [L1]
 ESC   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  MINUS EQUAL GRAVE
 TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  LBKT  RBKT  SQT
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  BSLH  FSLH
+LSFT  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  BSLH  FSLH
 
 [L2]
 1     2     3     4     5     | 6     7      8      9    0
@@ -93,8 +86,8 @@ TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 
 [L4]
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  UP    TRNS  TRNS
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  LEFT  DOWN  RIGHT TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  UP    TRNS  BSPC
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  LEFT  DOWN  RIGHT ENTER
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 
 # Highest priority while Right Shift is held. Left-hand bindings fall through.

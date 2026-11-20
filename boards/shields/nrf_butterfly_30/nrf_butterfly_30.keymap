@@ -17,26 +17,6 @@
         };
     };
 
-    combos {
-        compatible = "zmk,combos";
-
-        combo_0 {
-            timeout-ms = <20>;
-            require-prior-idle-ms = <100>;
-            key-positions = <8 9>;
-            layers = <0>;
-            bindings = <&kp BSPC>;
-        };
-
-        combo_1 {
-            timeout-ms = <20>;
-            require-prior-idle-ms = <100>;
-            key-positions = <18 19>;
-            layers = <0>;
-            bindings = <&kp ENTER>;
-        };
-    };
-
     behaviors {
         // Tap = base key, hold = momentary-activate a layer. "tap-preferred"
         // flavor: an interrupting key press only resolves to the layer if
@@ -114,7 +94,7 @@
             bindings = <
 &kp ESC &trans &trans &trans &trans &trans &trans &kp MINUS &kp EQUAL &kp GRAVE
 &kp TAB &trans &trans &trans &trans &trans &trans &kp LBKT &kp RBKT &kp SQT
-&trans &trans &trans &trans &trans &trans &trans &trans &kp BSLH &kp FSLH
+&kp LSHFT &trans &trans &trans &trans &trans &trans &trans &kp BSLH &kp FSLH
             >;
         };
 
@@ -136,8 +116,8 @@
 
         L4 {
             bindings = <
-&trans &trans &trans &trans &trans &trans &trans &kp UP &trans &trans
-&trans &trans &trans &trans &trans &trans &kp LEFT &kp DOWN &kp RIGHT &trans
+&trans &trans &trans &trans &trans &trans &trans &kp UP &trans &kp BSPC
+&trans &trans &trans &trans &trans &trans &kp LEFT &kp DOWN &kp RIGHT &kp ENTER
 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
             >;
         };
