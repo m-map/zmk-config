@@ -110,6 +110,7 @@ def resolve_token(tok, context, layer_index, key_aliases, _stack=()):
 
 ALIAS_RE = re.compile(r"^K(\d+)\s*=\s*(\S+)$")
 HEADER_RE = re.compile(r"^\[(.+)\]$")
+KEY_COMBO_RE = re.compile(r"^COMBO\s+(\S+)\s*=\s*(\d+(?:\s+\d+)+)$")
 
 
 def main():
@@ -117,6 +118,7 @@ def main():
 
     layers = []  # list of {"name": str, "rows": [[tok, ...], ...]}
     key_aliases = {}
+    combos = []
     current_name = None
     rows = []
 
@@ -130,6 +132,14 @@ def main():
     for line in lines:
         trimmed = line.strip()
         if trimmed == "" or trimmed.startswith("#"):
+            continue
+
+        combo = KEY_COMBO_RE.match(trimmed)
+        if combo:
+            positions = [int(p) for p in combo.group(2).split()]
+            if len(set(positions)) != len(positions) or any(p >= 30 for p in positions):
+                raise ValueError(f"Combo positions must be distinct and between 0 and 29: {trimmed}")
+            combos.append((combo.group(1), positions))
             continue
 
         header = HEADER_RE.match(trimmed)
@@ -176,6 +186,18 @@ def main():
         )
 
     body = "\n\n".join(layer_blocks)
+    combo_blocks = []
+    for i, (token, positions) in enumerate(combos):
+        binding = resolve_token(token, "simultaneous combo", layer_index, key_aliases)
+        combo_blocks.append(
+            f"        combo_{i} {{\n"
+            f"            timeout-ms = <50>;\n"
+            f"            key-positions = <{' '.join(map(str, positions))}>;\n"
+            f"            layers = <0>;\n"
+            f"            bindings = <{binding}>;\n"
+            f"        }};"
+        )
+    combo_body = "\n\n".join(combo_blocks)
 
     output = f"""// GENERATED FILE -- edit layout.txt and run generate-keymap.py instead.
 #include <behaviors.dtsi>
@@ -184,6 +206,12 @@ def main():
 #include <dt-bindings/zmk/outputs.h>
 
 / {{
+    combos {{
+        compatible = "zmk,combos";
+
+{combo_body}
+    }};
+
     behaviors {{
         // Tap = base key, hold = momentary-activate a layer. "tap-preferred"
         // flavor: an interrupting key press only resolves to the layer if
@@ -194,7 +222,7 @@ def main():
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <300>;
+            tapping-term-ms = <200>;
             bindings = <&mo>, <&kp>;
             display-name = "Hold Layer";
         }};
@@ -205,13 +233,13 @@ def main():
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <300>;
+            tapping-term-ms = <200>;
             bindings = <&tog>, <&kp>;
             display-name = "Hold Toggle Layer";
         }};
 
         // Tap = base key, hold = a different key (used for modifiers, e.g.
-        // Z taps 'z' but held acts as left shift). Drives every "<base>K<n>"
+        // A taps 'a' but held acts as left shift). Drives every "<base>K<n>"
         // combo token, where K<n> is defined by a "K<n> = <token>" alias
         // line in layout.txt.
         //
@@ -219,10 +247,9 @@ def main():
         // AND released while this key is still held, that resolves to hold
         // as soon as the other key releases -- no waiting out the tapping
         // term -- so holding B and tapping C for Cmd+C feels like a real
-        // chord instead of a laggy timeout. require-prior-idle-ms keeps
-        // ordinary fast typing safe: if this key is pressed within 150ms of
-        // any other keypress, it resolves as a tap immediately, no hold
-        // ever considered. retro-tap is deliberately NOT set: holding a
+        // chord instead of a laggy timeout. No prior-idle restriction:
+        // successive modifier holds must work for Cmd+Shift+number chords.
+        // retro-tap is deliberately NOT set: holding a
         // modifier alone and releasing it with nothing else pressed must
         // keep producing no output, same as holding a real shift key.
         hold_mod: hold_mod {{
@@ -230,7 +257,6 @@ def main():
             #binding-cells = <2>;
             flavor = "balanced";
             tapping-term-ms = <200>;
-            require-prior-idle-ms = <150>;
             hold-trigger-on-release;
             bindings = <&kp>, <&kp>;
             display-name = "Hold Mod";

@@ -5,6 +5,24 @@
 #include <dt-bindings/zmk/outputs.h>
 
 / {
+    combos {
+        compatible = "zmk,combos";
+
+        combo_0 {
+            timeout-ms = <50>;
+            key-positions = <8 9>;
+            layers = <0>;
+            bindings = <&kp BSPC>;
+        };
+
+        combo_1 {
+            timeout-ms = <50>;
+            key-positions = <18 19>;
+            layers = <0>;
+            bindings = <&kp ENTER>;
+        };
+    };
+
     behaviors {
         // Tap = base key, hold = momentary-activate a layer. "tap-preferred"
         // flavor: an interrupting key press only resolves to the layer if
@@ -15,7 +33,7 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <300>;
+            tapping-term-ms = <200>;
             bindings = <&mo>, <&kp>;
             display-name = "Hold Layer";
         };
@@ -26,13 +44,13 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <300>;
+            tapping-term-ms = <200>;
             bindings = <&tog>, <&kp>;
             display-name = "Hold Toggle Layer";
         };
 
         // Tap = base key, hold = a different key (used for modifiers, e.g.
-        // Z taps 'z' but held acts as left shift). Drives every "<base>K<n>"
+        // A taps 'a' but held acts as left shift). Drives every "<base>K<n>"
         // combo token, where K<n> is defined by a "K<n> = <token>" alias
         // line in layout.txt.
         //
@@ -40,10 +58,9 @@
         // AND released while this key is still held, that resolves to hold
         // as soon as the other key releases -- no waiting out the tapping
         // term -- so holding B and tapping C for Cmd+C feels like a real
-        // chord instead of a laggy timeout. require-prior-idle-ms keeps
-        // ordinary fast typing safe: if this key is pressed within 150ms of
-        // any other keypress, it resolves as a tap immediately, no hold
-        // ever considered. retro-tap is deliberately NOT set: holding a
+        // chord instead of a laggy timeout. No prior-idle restriction:
+        // successive modifier holds must work for Cmd+Shift+number chords.
+        // retro-tap is deliberately NOT set: holding a
         // modifier alone and releasing it with nothing else pressed must
         // keep producing no output, same as holding a real shift key.
         hold_mod: hold_mod {
@@ -51,7 +68,6 @@
             #binding-cells = <2>;
             flavor = "balanced";
             tapping-term-ms = <200>;
-            require-prior-idle-ms = <150>;
             hold-trigger-on-release;
             bindings = <&kp>, <&kp>;
             display-name = "Hold Mod";
@@ -63,33 +79,25 @@
 
         base {
             bindings = <
-&kp Q &kp W &kp E &kp R &kp T &kp Y &kp U &kp I &kp O &tog 1
-&kp A &kp S &hold_layer 5 D &hold_layer 2 F &kp G &kp H &kp J &kp K &kp L &hold_layer 3 SEMI
-&hold_mod LSHFT Z &hold_mod LCTRL X &kp C &hold_mod LALT V &hold_mod LGUI B &kp SPACE &kp N &kp M &kp COMMA &hold_mod RSHFT DOT
-            >;
-        };
-
-        T1 {
-            bindings = <
-&kp TAB &kp N1 &kp N2 &kp N3 &kp N4 &trans &trans &kp UP &trans &trans
-&kp A &kp Q &kp W &kp E &kp R &trans &kp LEFT &kp DOWN &kp RIGHT &trans
-&kp LCTRL &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&kp Q &kp W &kp E &kp R &kp T &kp Y &kp U &kp I &kp O &kp P
+&hold_mod LSHFT A &hold_layer 4 S &hold_layer 2 D &hold_layer 1 F &kp G &kp H &kp J &hold_layer 2 K &kp L &hold_mod RSHFT SEMI
+&hold_mod LCTRL Z &kp X &kp C &hold_mod LALT V &hold_mod LGUI B &kp SPACE &kp N &kp M &kp COMMA &kp DOT
             >;
         };
 
         L1 {
             bindings = <
-&kp ESC &kp GRAVE &trans &trans &trans &trans &trans &kp MINUS &kp EQUAL &kp BSPC
-&kp TAB &trans &trans &trans &trans &trans &kp LBKT &kp RBKT &kp BSLH &kp ENTER
-&trans &trans &trans &trans &trans &trans &trans &kp LS(SEMI) &kp SQT &kp FSLH
+&kp ESC &trans &trans &trans &trans &trans &trans &kp MINUS &kp EQUAL &kp GRAVE
+&kp TAB &trans &trans &trans &trans &trans &trans &kp LBKT &kp RBKT &kp SQT
+&trans &trans &trans &trans &trans &trans &trans &trans &kp BSLH &kp FSLH
             >;
         };
 
         L2 {
             bindings = <
 &kp N1 &kp N2 &kp N3 &kp N4 &kp N5 &kp N6 &kp N7 &kp N8 &kp N9 &kp N0
-&trans &trans &trans &trans &trans &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &trans
-&trans &trans &trans &trans &trans &trans &out OUT_USB &out OUT_BLE &mo 4 &kp LSHFT
+&trans &trans &trans &trans &trans &bt BT_CLR &bt BT_SEL 0 &trans &bt BT_SEL 1 &trans
+&trans &trans &trans &trans &trans &trans &out OUT_USB &out OUT_BLE &mo 3 &kp DEL
             >;
         };
 

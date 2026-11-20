@@ -46,7 +46,7 @@
 #
 # Hold-tap combo tokens: <base><Type><n>, e.g. "ZK1", "DL4", "SEMIL2".
 # <base> is a normal key token (a letter, digit, or word token like SEMI).
-# Tap the key for <base>; hold it (300ms+) with no other key pressed in that
+# Tap the key for <base>; hold it (200ms+) with no other key pressed in that
 # window and it acts as the "other side" below instead -- release after
 # holding and nothing is typed, same as tapping a real modifier/layer key
 # and letting go.
@@ -58,10 +58,15 @@
 # K<n> alias lines (only needed for K-type combos):
 #   K<n> = <token>               defines what holding a "...K<n>" combo sends
 
+# Simultaneous base-layer combos: output = zero-based physical positions.
+# Keys must be pressed within 50ms. Positions run left-to-right, top-to-bottom.
+COMBO BSPC = 8 9
+COMBO ENTER = 18 19
+
 [base]
-Q     W     E     R     T     | Y     U     I     O     TOGT1
-A     S     DL4   FL1   G     | H     J     K     L     SEMIL2
-ZK1   XK2   C     VK3   BK4   | SPACE N     M     COMMA DOTK5
+Q     W     E     R     T     | Y     U     I     O     P
+AK1   SL4   DL2   FL1   G     | H     J     KL2   L     SEMIK5
+ZK2   X     C     VK3   BK4   | SPACE N     M     COMMA DOT
 
 K1 = LSFT
 K2 = LCTL
@@ -69,20 +74,15 @@ K3 = LALT
 K4 = COMMAND
 K5 = RSFT
 
-[T1]
-TAB   1     2     3     4     | TRNS  TRNS  UP    TRNS   TRNS
-A     Q     W     E     R     | TRNS  LEFT  DOWN  RIGHT  TRNS
-LCTL  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS   TRNS
-
 [L1]
-ESC   GRAVE TRNS  TRNS  TRNS  | TRNS  TRNS  MINUS EQUAL BSPC
-TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  LBKT  RBKT  BSLH  ENTER
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  COLON SQT   FSLH
+ESC   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  MINUS EQUAL GRAVE
+TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  LBKT  RBKT  SQT
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  BSLH  FSLH
 
 [L2]
 1     2     3     4     5     | 6     7      8      9    0
-TRNS  TRNS  TRNS  TRNS  TRNS  | BTCLR BT0    BT1    BT2  TRNS
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  OUTUSB OUTBLE L3   LSFT
+TRNS  TRNS  TRNS  TRNS  TRNS  | BTCLR BT0    TRNS   BT1  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  OUTUSB OUTBLE L3   DEL
 
 [L3]
 F1    F2    F3    F4    F5    | F6    F7    F8    F9    F10
