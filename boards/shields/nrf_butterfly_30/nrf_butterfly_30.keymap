@@ -11,9 +11,9 @@
             #binding-cells = <0>;
             wait-ms = <0>;
             tap-ms = <0>;
-            bindings = <&macro_press &mo 5 &kp RSHFT>,
+            bindings = <&macro_press &mo 6 &kp RSHFT>,
                        <&macro_pause_for_release>,
-                       <&macro_release &mo 5 &kp RSHFT>;
+                       <&macro_release &mo 6 &kp RSHFT>;
         };
     };
 
@@ -86,14 +86,14 @@
             bindings = <
 &kp Q &kp W &kp E &kp R &kp T &kp Y &kp U &kp I &kp O &kp P
 &hold_mod LSHFT A &hold_layer 4 S &hold_layer 2 D &hold_layer 1 F &kp G &kp H &kp J &hold_layer 2 K &kp L &hold_right_shift 0 SEMI
-&hold_mod LCTRL Z &kp X &kp C &hold_mod LALT V &hold_mod LGUI B &kp SPACE &kp N &kp M &kp COMMA &kp DOT
+&hold_mod LCTRL Z &kp X &kp C &hold_mod LALT V &hold_mod LGUI B &hold_layer 5 SPACE &kp N &kp M &kp COMMA &kp DOT
             >;
         };
 
         L1 {
             bindings = <
-&kp ESC &trans &trans &trans &trans &trans &trans &kp MINUS &kp EQUAL &kp GRAVE
-&kp TAB &trans &trans &trans &trans &trans &trans &kp LBKT &kp RBKT &kp SQT
+&kp ESC &trans &trans &trans &trans &trans &trans &kp GRAVE &kp MINUS &kp EQUAL
+&kp TAB &trans &trans &trans &trans &trans &trans &kp SQT &kp LBKT &kp RBKT
 &kp LSHFT &trans &trans &trans &trans &trans &trans &trans &kp BSLH &kp FSLH
             >;
         };
@@ -116,8 +116,16 @@
 
         L4 {
             bindings = <
-&trans &trans &trans &trans &trans &trans &trans &kp UP &trans &kp BSPC
-&trans &trans &trans &trans &trans &trans &kp LEFT &kp DOWN &kp RIGHT &kp ENTER
+&trans &trans &trans &trans &trans &trans &trans &kp UP &trans &trans
+&trans &trans &trans &trans &trans &trans &kp LEFT &kp DOWN &kp RIGHT &trans
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+            >;
+        };
+
+        L5 {
+            bindings = <
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &kp BSPC
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &kp ENTER
 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
             >;
         };
