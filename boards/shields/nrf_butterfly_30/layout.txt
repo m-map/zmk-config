@@ -62,8 +62,8 @@
 
 [base]
 Q     W     E     R     T     | Y     U     I     O     P
-AK1   SL4   DL2   FL1   G     | H     J     KL2   L     SEMI_RSHIFT
-ZK2   X     C     VK3   BK4   | SPACEL5 N   M     COMMA DOT
+AK1   SL1   DL2   FL4   G     | H     J     KL2   L     SEMI_RSHIFT
+ZK2   X     C     VK3   BK4   | SPACE N     M     COMMA DOT
 
 K1 = LSFT
 K2 = LCTL
@@ -85,15 +85,10 @@ F1    F2    F3    F4    F5    | F6    F7    F8    F9    F10
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 
+# Hold F for navigation and editing. Hold S for symbols.
 [L4]
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  UP    TRNS  TRNS
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  LEFT  DOWN  RIGHT TRNS
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
-
-# Hold Space for editing keys; tap Space normally on base.
-[L5]
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  BSPC
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  ENTER
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  UP    TRNS  BSPC
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  LEFT  DOWN  RIGHT ENTER
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 
 # Highest priority while Right Shift is held. Left-hand bindings fall through.
