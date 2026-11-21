@@ -62,7 +62,7 @@
 
 [base]
 Q     W     E     R     T     | Y     U     I     O     P
-AK1   SL1   DL2   FL4   G     | H     J     KL2   L     SEMI_RSHIFT
+AK1   SL1   DL2   FL4   G     | H     JL5   KL2   L     SEMI_RSHIFT
 ZK2   X     C     VK3   BK4   | SPACE N     M     COMMA DOT
 
 K1 = LSFT
@@ -90,6 +90,12 @@ TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  UP    TRNS  BSPC
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  LEFT  DOWN  RIGHT ENTER
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+
+# Hold J for editing keys; tap J for its normal letter.
+[L5]
+ESC   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  BSPC
+TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  ENTER
+TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  DEL
 
 # Highest priority while Right Shift is held. Left-hand bindings fall through.
 # Keycodes stay the same; the host's Colemak layout still translates them.
