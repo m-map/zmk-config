@@ -65,15 +65,12 @@
 # Fast base-layer chords: press both keys within 25ms while overlapping.
 # No prior-idle requirement: Enter/Backspace also work right after typing.
 # Physical positions are numbered left-to-right, top-to-bottom from zero.
-COMBO ENTER = 16 19
-COMBO BSPC = 16 9
 COMBO TAB = 13 0
 COMBO ESC = 11 0
-COMBO ENTER = 13 19
 COMBO ENTER = 13 25
 
 [base]
-Q     W     E     R     T     | Y     U     I     O     P
+Q     W     E     R     T     | Y     U     I     O     BSPC
 A_SHIFT SL1 D     FL4   G     | H     JL5   K     L     SEMI_RSHIFT
 ZK2   X     C     VK3   BK4   | SPACEL2 N   M     COMMA DOT
 
@@ -83,7 +80,7 @@ K4 = COMMAND
 
 [L1]
 ESC   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  GRAVE MINUS EQUAL
-LSFT  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  SQT   LBKT  RBKT
+LSFT  TRNS  TRNS  TRNS  TRNS  | TRNS  P     SQT   LBKT  RBKT
 LSFT  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  BSLH  FSLH
 
 [L2]
@@ -99,18 +96,18 @@ TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 # Hold F for navigation and editing. Hold S for symbols.
 [L4]
 TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  UP    TRNS  BSPC
-LSFT  TRNS  TRNS  TRNS  TRNS  | TRNS  LEFT  DOWN  RIGHT ENTER
+LSFT  TRNS  TRNS  TRNS  TRNS  | TRNS  LEFT  DOWN  RIGHT TRNS
 TRNS  TRNS  TRNS  TRNS  TRNS  | ENTER TRNS  TRNS  TRNS  TRNS
 
 # Hold J for editing keys; tap J for its normal letter.
 [L5]
 ESC   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  BSPC
-TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  ENTER
+TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  DEL
 
 # Highest priority while Right Shift is held. Left-hand bindings fall through.
 # Keycodes stay the same; the host's Colemak layout still translates them.
 [right_plain]
-TRNS  TRNS  TRNS  TRNS  TRNS  | Y     U     I     O     P
+TRNS  TRNS  TRNS  TRNS  TRNS  | Y     U     I     O     BSPC
 TRNS  TRNS  TRNS  TRNS  TRNS  | H     J     K     L     SEMI
 TRNS  TRNS  TRNS  TRNS  TRNS  | SPACE N     M     COMMA DOT
