@@ -39,7 +39,7 @@
 #   BTCLR                             clear current Bluetooth profile's bond
 #   SEMI_RSHIFT                      tap semicolon; hold Right Shift and
 #                                    plain right-hand keys (no layers/combos)
-#   A_SHIFT                          tap A; hold Left Shift after 300ms
+#   A_SHIFT                          tap A; hold Left Shift after 225ms
 #                                    (other keys do not trigger it early)
 #
 # Layer-reference tokens (by name, matching a [layer] header below):
@@ -62,11 +62,14 @@
 # K<n> alias lines (only needed for K-type combos):
 #   K<n> = <token>               defines what holding a "...K<n>" combo sends
 
-# Fast base-layer chords: press both keys within 20ms while overlapping.
+# Fast base-layer chords: press both keys within 25ms while overlapping.
 # No prior-idle requirement: Enter/Backspace also work right after typing.
 # Physical positions are numbered left-to-right, top-to-bottom from zero.
 COMBO ENTER = 16 19
 COMBO BSPC = 16 9
+COMBO TAB = 13 0
+COMBO ESC = 11 0
+COMBO ENTER = 13 19
 
 [base]
 Q     W     E     R     T     | Y     U     I     O     P

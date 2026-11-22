@@ -21,17 +21,38 @@
         compatible = "zmk,combos";
 
         combo_0 {
-            timeout-ms = <20>;
+            timeout-ms = <25>;
             key-positions = <16 19>;
             layers = <0>;
             bindings = <&kp ENTER>;
         };
 
         combo_1 {
-            timeout-ms = <20>;
+            timeout-ms = <25>;
             key-positions = <16 9>;
             layers = <0>;
             bindings = <&kp BSPC>;
+        };
+
+        combo_2 {
+            timeout-ms = <25>;
+            key-positions = <13 0>;
+            layers = <0>;
+            bindings = <&kp TAB>;
+        };
+
+        combo_3 {
+            timeout-ms = <25>;
+            key-positions = <11 0>;
+            layers = <0>;
+            bindings = <&kp ESC>;
+        };
+
+        combo_4 {
+            timeout-ms = <25>;
+            key-positions = <13 19>;
+            layers = <0>;
+            bindings = <&kp ENTER>;
         };
     };
 
@@ -91,7 +112,7 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <300>;
+            tapping-term-ms = <225>;
             bindings = <&kp>, <&kp>;
             display-name = "A Left Shift";
         };

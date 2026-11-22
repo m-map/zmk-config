@@ -193,7 +193,7 @@ def main():
         binding = resolve_token(token, "simultaneous combo", layer_index, key_aliases)
         combo_blocks.append(
             f"        combo_{i} {{\n"
-            f"            timeout-ms = <20>;\n"
+            f"            timeout-ms = <25>;\n"
             f"            key-positions = <{' '.join(map(str, positions))}>;\n"
             f"            layers = <0>;\n"
             f"            bindings = <{binding}>;\n"
@@ -282,7 +282,7 @@ def main():
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "tap-preferred";
-            tapping-term-ms = <300>;
+            tapping-term-ms = <225>;
             bindings = <&kp>, <&kp>;
             display-name = "A Left Shift";
         }};
