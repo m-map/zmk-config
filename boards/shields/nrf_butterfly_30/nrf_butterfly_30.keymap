@@ -93,7 +93,7 @@
         L1 {
             bindings = <
 &kp ESC &trans &trans &trans &trans &trans &trans &kp GRAVE &kp MINUS &kp EQUAL
-&kp TAB &trans &trans &trans &trans &trans &trans &kp SQT &kp LBKT &kp RBKT
+&kp LSHFT &trans &trans &trans &trans &trans &trans &kp SQT &kp LBKT &kp RBKT
 &kp LSHFT &trans &trans &trans &trans &trans &trans &trans &kp BSLH &kp FSLH
             >;
         };
@@ -116,8 +116,8 @@
 
         L4 {
             bindings = <
-&trans &trans &trans &trans &trans &trans &trans &kp UP &trans &kp BSPC
-&trans &trans &trans &trans &trans &trans &kp LEFT &kp DOWN &kp RIGHT &kp ENTER
+&kp TAB &trans &trans &trans &trans &trans &trans &kp UP &trans &kp BSPC
+&kp LSHFT &trans &trans &trans &trans &trans &kp LEFT &kp DOWN &kp RIGHT &kp ENTER
 &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
             >;
         };
