@@ -17,6 +17,24 @@
         };
     };
 
+    combos {
+        compatible = "zmk,combos";
+
+        combo_0 {
+            timeout-ms = <20>;
+            key-positions = <16 19>;
+            layers = <0>;
+            bindings = <&kp ENTER>;
+        };
+
+        combo_1 {
+            timeout-ms = <20>;
+            key-positions = <16 9>;
+            layers = <0>;
+            bindings = <&kp BSPC>;
+        };
+    };
+
     behaviors {
         // Tap = base key, hold = momentary-activate a layer. "tap-preferred"
         // flavor: an interrupting key press only resolves to the layer if
@@ -44,7 +62,7 @@
         };
 
         // Tap = base key, hold = a different key (used for modifiers, e.g.
-        // A taps 'a' but held acts as left shift). Drives every "<base>K<n>"
+        // B taps 'b' but held acts as Command). Drives every "<base>K<n>"
         // combo token, where K<n> is defined by a "K<n> = <token>" alias
         // line in layout.txt.
         //
@@ -67,6 +85,17 @@
             display-name = "Hold Mod";
         };
 
+        // A needs extra typing protection: another key's press/release
+        // must not turn a fast A-L roll into Shift-L before the timeout.
+        hold_a_shift: hold_a_shift {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <300>;
+            bindings = <&kp>, <&kp>;
+            display-name = "A Left Shift";
+        };
+
         // Tap semicolon; hold Shift plus a plain right-hand layer.
         // Balanced flavor preserves fast letter rolls before hold resolves.
         hold_right_shift: hold_right_shift {
@@ -85,7 +114,7 @@
         base {
             bindings = <
 &kp Q &kp W &kp E &kp R &kp T &kp Y &kp U &kp I &kp O &kp P
-&hold_mod LSHFT A &hold_layer 1 S &hold_layer 2 D &hold_layer 4 F &kp G &kp H &hold_layer 5 J &hold_layer 2 K &kp L &hold_right_shift 0 SEMI
+&hold_a_shift LSHFT A &hold_layer 1 S &hold_layer 2 D &hold_layer 4 F &kp G &kp H &hold_layer 5 J &hold_layer 2 K &kp L &hold_right_shift 0 SEMI
 &hold_mod LCTRL Z &kp X &kp C &hold_mod LALT V &hold_mod LGUI B &kp SPACE &kp N &kp M &kp COMMA &kp DOT
             >;
         };

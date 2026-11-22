@@ -31,6 +31,7 @@ TOKEN_MAP = {
     "OUTTOG": "&out OUT_TOG", "OUTUSB": "&out OUT_USB", "OUTBLE": "&out OUT_BLE",
     "BTCLR": "&bt BT_CLR",
     "SEMI_RSHIFT": "&hold_right_shift 0 SEMI",
+    "A_SHIFT": "&hold_a_shift LSHFT A",
 }
 
 LETTER_RE = re.compile(r"^[A-Z]$")
@@ -193,7 +194,6 @@ def main():
         combo_blocks.append(
             f"        combo_{i} {{\n"
             f"            timeout-ms = <20>;\n"
-            f"            require-prior-idle-ms = <100>;\n"
             f"            key-positions = <{' '.join(map(str, positions))}>;\n"
             f"            layers = <0>;\n"
             f"            bindings = <{binding}>;\n"
@@ -253,7 +253,7 @@ def main():
         }};
 
         // Tap = base key, hold = a different key (used for modifiers, e.g.
-        // A taps 'a' but held acts as left shift). Drives every "<base>K<n>"
+        // B taps 'b' but held acts as Command). Drives every "<base>K<n>"
         // combo token, where K<n> is defined by a "K<n> = <token>" alias
         // line in layout.txt.
         //
@@ -274,6 +274,17 @@ def main():
             hold-trigger-on-release;
             bindings = <&kp>, <&kp>;
             display-name = "Hold Mod";
+        }};
+
+        // A needs extra typing protection: another key's press/release
+        // must not turn a fast A-L roll into Shift-L before the timeout.
+        hold_a_shift: hold_a_shift {{
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <300>;
+            bindings = <&kp>, <&kp>;
+            display-name = "A Left Shift";
         }};
 
         // Tap semicolon; hold Shift plus a plain right-hand layer.
