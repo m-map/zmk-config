@@ -70,11 +70,12 @@ COMBO BSPC = 16 9
 COMBO TAB = 13 0
 COMBO ESC = 11 0
 COMBO ENTER = 13 19
+COMBO ENTER = 13 25
 
 [base]
 Q     W     E     R     T     | Y     U     I     O     P
-A_SHIFT SL1 DL2   FL4   G     | H     JL5   KL2   L     SEMI_RSHIFT
-ZK2   X     C     VK3   BK4   | SPACE N     M     COMMA DOT
+A_SHIFT SL1 D     FL4   G     | H     JL5   K     L     SEMI_RSHIFT
+ZK2   X     C     VK3   BK4   | SPACEL2 N   M     COMMA DOT
 
 K2 = LCTL
 K3 = LALT
@@ -99,7 +100,7 @@ TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
 [L4]
 TAB   TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  UP    TRNS  BSPC
 LSFT  TRNS  TRNS  TRNS  TRNS  | TRNS  LEFT  DOWN  RIGHT ENTER
-TRNS  TRNS  TRNS  TRNS  TRNS  | TRNS  TRNS  TRNS  TRNS  TRNS
+TRNS  TRNS  TRNS  TRNS  TRNS  | ENTER TRNS  TRNS  TRNS  TRNS
 
 # Hold J for editing keys; tap J for its normal letter.
 [L5]

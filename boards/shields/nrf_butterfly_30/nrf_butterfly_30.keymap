@@ -54,6 +54,13 @@
             layers = <0>;
             bindings = <&kp ENTER>;
         };
+
+        combo_5 {
+            timeout-ms = <25>;
+            key-positions = <13 25>;
+            layers = <0>;
+            bindings = <&kp ENTER>;
+        };
     };
 
     behaviors {
@@ -135,8 +142,8 @@
         base {
             bindings = <
 &kp Q &kp W &kp E &kp R &kp T &kp Y &kp U &kp I &kp O &kp P
-&hold_a_shift LSHFT A &hold_layer 1 S &hold_layer 2 D &hold_layer 4 F &kp G &kp H &hold_layer 5 J &hold_layer 2 K &kp L &hold_right_shift 0 SEMI
-&hold_mod LCTRL Z &kp X &kp C &hold_mod LALT V &hold_mod LGUI B &kp SPACE &kp N &kp M &kp COMMA &kp DOT
+&hold_a_shift LSHFT A &hold_layer 1 S &kp D &hold_layer 4 F &kp G &kp H &hold_layer 5 J &kp K &kp L &hold_right_shift 0 SEMI
+&hold_mod LCTRL Z &kp X &kp C &hold_mod LALT V &hold_mod LGUI B &hold_layer 2 SPACE &kp N &kp M &kp COMMA &kp DOT
             >;
         };
 
@@ -168,7 +175,7 @@
             bindings = <
 &kp TAB &trans &trans &trans &trans &trans &trans &kp UP &trans &kp BSPC
 &kp LSHFT &trans &trans &trans &trans &trans &kp LEFT &kp DOWN &kp RIGHT &kp ENTER
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &kp ENTER &trans &trans &trans &trans
             >;
         };
 
